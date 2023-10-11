@@ -4,4 +4,6 @@
 * 14:18 PM EST - Coding.
 * 14:24 PM EST - Wondering how I should send the password to Ricky -- If I had his PGP pubkey I could get the password output securely from terraform and send it directly on slack. For now I'll keep it in my password manager. Note that there is a password in the state file. Thankfully the backend is encrypted.
 * fixed a typo
-* 14:37 - Set up local env vars. Triggered a plan, looks good.
+
+* 14:37 PM EST - Set up local env vars. Triggered a plan, looks good.
+* 15:00 PM EST - Applied. Also moved state to s3 bucket.
