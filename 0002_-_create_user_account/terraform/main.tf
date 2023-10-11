@@ -38,7 +38,7 @@ data "aws_iam_policy" "power_user_access" {
 # Attach that policy to the power_users group
 resource "aws_iam_group_policy_attachment" "test-attach" {
   group      = aws_iam_group.power_users.name
-  policy_arn = aws_iam_policy.power_user_access.arnx
+  policy_arn = data.aws_iam_policy.power_user_access.arn
 }
 
 # Set up web console access for rclemente
