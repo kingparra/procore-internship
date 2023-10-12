@@ -6,7 +6,7 @@ module "terraform_state_backend" {
   source = "cloudposse/tfstate-backend/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version     = "x.x.x"
-  name       = "0005_-_audit_solution_for_iam_changes"
+  name       = "0006_-_audit_solution_for_iam_changes"
   attributes = ["state"]
 
   terraform_backend_config_file_path = "."
