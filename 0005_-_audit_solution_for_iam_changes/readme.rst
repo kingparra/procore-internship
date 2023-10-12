@@ -1,7 +1,7 @@
 Ticket 6. (Project) Audit solution for IAM changes
 **************************************************
 
-.. images:: ./diagram.drawio.png
+.. image:: ./diagram.drawio.png
 
 * Enable CloudTrail in us-east-1 for the account
 
