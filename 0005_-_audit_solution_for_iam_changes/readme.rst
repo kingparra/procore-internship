@@ -1,6 +1,8 @@
 Ticket 6. (Project) Audit solution for IAM changes
 **************************************************
 
+.. images:: ./diagram.drawio.png
+
 * Enable CloudTrail in us-east-1 for the account
 
 * Send trail logs to the CloudWatch "PP-IAM-Trail-Logs" log group

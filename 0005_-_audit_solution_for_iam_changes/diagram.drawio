@@ -1,0 +1,76 @@
+<mxfile host="Electron" modified="2023-10-12T19:02:09.547Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="U9kLoFo9tmu3Jj4j5XuY" version="22.0.2" type="device">
+  <diagram name="Page-1" id="eofls3MA46LrU2rrhDdt">
+    <mxGraphModel dx="1886" dy="1386" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-1" value="AWS Account" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="80" y="70" width="1520" height="960" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-7" target="isi8LxJ7Jkb0rKrkN9j4-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="466.5" y="139" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-3" target="isi8LxJ7Jkb0rKrkN9j4-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-3" value="&lt;div style=&quot;font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); line-height: 19px;&quot;&gt;s3 bucket (for log storage, required)&lt;/div&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); line-height: 19px;&quot;&gt;&lt;div style=&quot;line-height: 19px;&quot;&gt;pp-iam-trail-Logs-bucket-evergreen-perigrinate&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.bucket;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="730" y="100" width="75" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-5" target="isi8LxJ7Jkb0rKrkN9j4-20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-5" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;log group&lt;br&gt;PP-IAM-Trail-Logs&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.logs;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="400" y="592.5" width="78" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-7" target="isi8LxJ7Jkb0rKrkN9j4-23" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-7" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;trail&lt;/div&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;YT-IAM-Trail&lt;/div&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudtrail;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="400" y="100" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-8" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;sns topic&lt;/div&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;Procore-plus-IAM-changes-kingparra-POC&lt;/div&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="1103.9" y="582.5" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-8" target="isi8LxJ7Jkb0rKrkN9j4-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="878" y="691.5" as="sourcePoint" />
+            <mxPoint x="1149" y="591.5" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1130" y="812.5" />
+              <mxPoint x="990" y="812.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-13" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;email subscribtion&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="900" y="872.5" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-15" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;kms key&lt;/div&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;{name is autogenerated}&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.kms;fillColor=#759C3E;gradientColor=none;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="1110" y="100" width="65.81" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-20" target="isi8LxJ7Jkb0rKrkN9j4-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-20" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;metric alarm on&lt;/div&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;eventSource = &quot;iam.amazonaws.com&quot;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.alarm;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="720" y="582.5" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-23" target="isi8LxJ7Jkb0rKrkN9j4-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-23" target="isi8LxJ7Jkb0rKrkN9j4-26" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-23" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;role to talk to log group&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#BF0816;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="400" y="392.5" width="78" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-26" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;assumeRole trust policy&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#BF0816;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sts;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="660.95" y="389.5" width="78" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="isi8LxJ7Jkb0rKrkN9j4-28" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; line-height: 19px;&quot;&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;Audit IAM changes using CloudTrail&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
+          <mxGeometry x="510" y="20" width="530" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
