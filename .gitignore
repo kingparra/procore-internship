@@ -43,3 +43,8 @@ terraform.rc
 ### Unrelated files
 aws_account.docx
 meeting-link.txt
+
+### Diagram backup files
+.$diagram.drawio.bkp
+.$diagram.drawio.dtmp
+
