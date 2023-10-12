@@ -14,8 +14,8 @@ provider "aws" {
 # Create the trail, name it "YT-IAM-Trail".
 
 # Create an s3 bucket to act as a destination for that trail. Suggested name "pp-iam-trail-Logs-bucket-evergreen-perigrinate". Turn on log file validation.
-resource "aws_s3_bucket" "example" {
-  bucket = "pp-iam-trail-Logs-bucket-evergreen-perigrinate"
+resource "aws_s3_bucket" "logs" {
+  bucket = "pp-iam-trail-logs-bucket-evergreen-perigrinate"
   force_destroy = true
 }
 
