@@ -3,12 +3,11 @@ resource "aws_cloudtrail" "trail" {
   name = var.trial_name
   # mandatory - an s3 bucket to log to
   s3_bucket_name = aws_s3_bucket.logs.id
-  /*
   # A CloudWatch log group to log to.
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.group.arn
   # A role that allows the CloudTrail service to log to the CloudWatch log group.
-  cloud_watch_logs_role_arn = null
-  */
+  cloud_watch_logs_role_arn = aws_iam_role.log_group_role.arn
+  enable_log_file_validation = true
 }
 
 # Create an s3 bucket to act as a destination for the trail.
@@ -50,8 +49,38 @@ resource "aws_cloudwatch_log_metric_filter" "filter" {
 */
 
 # Create a role to talk to the log group.
+resource "aws_iam_role" "log_group_role" {
+  # Role that will be assumed by cloudtrail to log to the cloudwatch log group.
+  name = "RoleForCloudtailToLogTo_${var.log_group_name}"
+  # Create an sts:assumeRole policy document for the role.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid = "TalkToLogGroup"
+      Principal = { Service = "cloudtrail.amazonaws.com" }
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+    }]
+  })
+  # Attach policy that allows logging.
+  inline_policy {
+    name = "allow_writes_to_log_group_policy"
+    # Create a policy that will allow the role to talk to the log group.
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ]
+        Resource = [aws_cloudwatch_log_group.group.arn]
+      }]
+    })
+  }
+}
 
-# Create an sts:assumeRole policy document for the role.
+
 
 
 # Create an sns topic, "Procore-plus-IAM-changes-kingparra-POC"

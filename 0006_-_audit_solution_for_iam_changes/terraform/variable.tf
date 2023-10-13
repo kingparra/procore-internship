@@ -10,10 +10,6 @@ variable "log_group_name" {
   default = "YT-IAM-Trail-Logs"
 }
 
-variable "metric_filter_name" {
-  default = "iam_events_filter"
-}
-
 variable "sns_topic_name" {
   default = "Procore-plus-IAM-changes-kingparra-POC"
 }
@@ -30,4 +26,3 @@ variable "metric_filter_pattern" {
   # This is part of the log group, not the alarm.
   default = "{($.eventSource = \"iam.amazonaws.com\")}"
 }
-
