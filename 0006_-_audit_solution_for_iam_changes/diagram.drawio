@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-10-13T21:16:07.273Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="2ZEH26t_CzWGz7d-mJGi" version="22.0.2" type="device">
+<mxfile host="Electron" modified="2023-10-13T22:16:56.178Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="R-JHuBUOFZA4Nh_LRYHr" version="22.0.2" type="device">
   <diagram name="Page-1" id="eofls3MA46LrU2rrhDdt">
     <mxGraphModel dx="1650" dy="1082" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -64,13 +64,24 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="isi8LxJ7Jkb0rKrkN9j4-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-23" target="isi8LxJ7Jkb0rKrkN9j4-26" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UKaA3XNom-GpcSsB9SyA-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="isi8LxJ7Jkb0rKrkN9j4-1" source="isi8LxJ7Jkb0rKrkN9j4-23" target="UKaA3XNom-GpcSsB9SyA-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="657" y="420" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="isi8LxJ7Jkb0rKrkN9j4-23" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;role to talk to log group&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#BF0816;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
           <mxGeometry x="400" y="392.5" width="78" height="44" as="geometry" />
         </mxCell>
         <mxCell id="isi8LxJ7Jkb0rKrkN9j4-26" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;assumeRole trust policy&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#BF0816;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sts;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
-          <mxGeometry x="660.95" y="389.5" width="78" height="50" as="geometry" />
+          <mxGeometry x="610" y="300" width="78" height="50" as="geometry" />
         </mxCell>
         <mxCell id="isi8LxJ7Jkb0rKrkN9j4-28" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; line-height: 19px;&quot;&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;Audit IAM changes using CloudTrail&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="isi8LxJ7Jkb0rKrkN9j4-1" vertex="1">
           <mxGeometry x="510" y="20" width="530" height="40" as="geometry" />
@@ -80,6 +91,9 @@
         </mxCell>
         <mxCell id="UKaA3XNom-GpcSsB9SyA-6" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;email subscribtion&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="isi8LxJ7Jkb0rKrkN9j4-1">
           <mxGeometry x="1220" y="872.5" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UKaA3XNom-GpcSsB9SyA-9" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Fira Code Light&amp;quot;, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;div&gt;policy document&lt;br&gt;allow_writes_to_log_group&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.permissions;" vertex="1" parent="isi8LxJ7Jkb0rKrkN9j4-1">
+          <mxGeometry x="630" y="460" width="47.69" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
