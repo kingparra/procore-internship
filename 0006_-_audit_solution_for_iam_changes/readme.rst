@@ -3,9 +3,14 @@ Ticket 6. (Project) Audit solution for IAM changes
 
 .. image:: ./diagram.drawio.png
 
+The goal of this ticket is to send an email whenever any API actions from the IAM service are logged by CloudWatch.
+
+In order to do that, several resources are involved. Above you can see a diagram of how they relate. The following sections are the sub-tasks of this ticket and their descriptions.
+
+
 Create a trail
 --------------
-Create a trail called "YT-IAM-Trial"
+Create a trail called "YT-IAM-Trail"
 
 Send all trail logs to CloudWatch
 ---------------------------------
