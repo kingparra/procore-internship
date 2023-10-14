@@ -34,19 +34,18 @@ resource "aws_cloudwatch_log_group" "group" {
   name = var.log_group_name
 }
 
-/*
 # Filter for the log group events
 resource "aws_cloudwatch_log_metric_filter" "filter" {
   name = "iam_events_filter"
   pattern = var.metric_filter_pattern
   log_group_name = aws_cloudwatch_log_group.group.id
   metric_transformation {
-    name = "iam_event"
-    namespace = "${var.log_group_name}_iam_events"
-    value = "[$.eventVersion, $.userIdentity, $.eventTime, $.eventSource, $.eventName, $.awsRegion, $.sourceIPAddress, $.userAgent, $.requestParameters, $.ResponseElements, $.requestID, $.eventID, $.readOnly, $.eventType, $.managementEvent, $.recipientAccountId, $.eventCategory]"
+    name = "iam_event_count"
+    namespace = "iam_events"
+    value = "1"
+    unit = "Count"
   }
 }
-*/
 
 # Create a role to talk to the log group.
 resource "aws_iam_role" "log_group_role" {
@@ -79,9 +78,6 @@ resource "aws_iam_role" "log_group_role" {
     })
   }
 }
-
-
-
 
 # Create an sns topic, "Procore-plus-IAM-changes-kingparra-POC"
 

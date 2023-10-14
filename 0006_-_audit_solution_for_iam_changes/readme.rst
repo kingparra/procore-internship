@@ -7,6 +7,7 @@ The goal of this ticket is to send an email whenever any API actions from the IA
 
 In order to do that, several resources are involved. Above you can see a diagram of how they relate. The following sections are the sub-tasks of this ticket and their descriptions.
 
+The main solution to this ticket is actually manual. You can download a video of it here: https://drive.proton.me/urls/8YT3N6Z1ZC#V4t35KWydr2i
 
 Create a trail
 --------------
