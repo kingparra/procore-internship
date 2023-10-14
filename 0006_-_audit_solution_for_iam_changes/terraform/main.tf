@@ -29,6 +29,7 @@ module "bucket_policy_document" {
 resource "aws_s3_bucket_policy" "attachment" {
   bucket = aws_s3_bucket.logs.id
   policy = module.bucket_policy_document.policy_document_json
+  # because the policy is needed to create the trail, you have to hard-code the trail arn into the policy
 }
 
 # Create a CloudWatch log group to send the trail output to.
