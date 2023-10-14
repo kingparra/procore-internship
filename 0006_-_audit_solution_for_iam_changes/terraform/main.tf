@@ -4,11 +4,13 @@ resource "aws_cloudtrail" "trail" {
   # mandatory - an s3 bucket to log to
   s3_bucket_name = aws_s3_bucket.logs.id
   # A CloudWatch log group to log to.
-  cloud_watch_logs_group_arn = aws_cloudwatch_log_group.group.arn
+  # aws_cloudwatch_log_group.group.arn "arn:aws:logs:us-east-1:496206821618:log-group:YT-IAM-Trail-Logs2"
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.group.arn}:*"
   # A role that allows the CloudTrail service to log to the CloudWatch log group.
   cloud_watch_logs_role_arn = aws_iam_role.log_group_role.arn
   enable_log_file_validation = true
 }
+
 
 # Create an s3 bucket to act as a destination for the trail.
 resource "aws_s3_bucket" "logs" {
@@ -32,16 +34,17 @@ resource "aws_s3_bucket_policy" "attachment" {
 # Create a CloudWatch log group to send the trail output to.
 resource "aws_cloudwatch_log_group" "group" {
   name = var.log_group_name
+  retention_in_days = var.log_group_retention_days
 }
 
 # Filter for the log group events
 resource "aws_cloudwatch_log_metric_filter" "filter" {
   name = "iam_events_filter"
-  pattern = var.metric_filter_pattern
+  pattern = "{$.eventSource = \"iam.amazonaws.com\"}"
   log_group_name = aws_cloudwatch_log_group.group.id
   metric_transformation {
-    name = "iam_event_count"
-    namespace = "iam_events"
+    name = var.metric_name
+    namespace = var.metric_namespace_name
     value = "1"
     unit = "Count"
   }
@@ -50,40 +53,66 @@ resource "aws_cloudwatch_log_metric_filter" "filter" {
 # Create a role to talk to the log group.
 resource "aws_iam_role" "log_group_role" {
   # Role that will be assumed by cloudtrail to log to the cloudwatch log group.
-  name = "RoleForCloudtailToLogTo_${var.log_group_name}"
-  # Create an sts:assumeRole policy document for the role.
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Sid = "TalkToLogGroup"
-      Principal = { Service = "cloudtrail.amazonaws.com" }
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-    }]
-  })
-  # Attach policy that allows logging.
+  name = local.log_group_role_name
+  assume_role_policy = data.aws_iam_policy_document.log_group_role_assume_policy.json
   inline_policy {
     name = "allow_writes_to_log_group_policy"
-    # Create a policy that will allow the role to talk to the log group.
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [{
-        Action = [
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:DescribeLogStreams"
-        ]
-        Resource = [aws_cloudwatch_log_group.group.arn]
-      }]
-    })
+    policy = data.aws_iam_policy_document.cwl_policy.json
+  }
+}
+
+# Create an sts:assumeRole policy document for the role.
+data "aws_iam_policy_document" "log_group_role_assume_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+  }
+}
+
+# Create a policy that will allow the role to talk to the log group.
+data "aws_iam_policy_document" "cwl_policy" {
+  statement {
+    effect  = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents"
+      ]
+    resources = [
+      "${aws_cloudwatch_log_group.group.arn}:*",
+    ]
   }
 }
 
 # Create an sns topic, "Procore-plus-IAM-changes-kingparra-POC"
+resource "aws_sns_topic" "topic" {
+  name = var.sns_topic_name
+}
 
-# Subscribe "chris@kingparra.work" to the sns topic.
+# Subscribe "chris@kingparra.work" and "procoreplus@gmail.com" to the sns topic.
+resource "aws_sns_topic_subscription" "subs" {
+  for_each = toset(var.emails)
+  topic_arn = aws_sns_topic.topic.arn
+  protocol = "email"
+  endpoint = each.key
+}
 
-# Create a metric alarm with pattern { ($.eventSource = "iam.amazonaws.com") }.
-# Send alarm events to the topic.
-
-# Send the output of the trail to both the bucket (mandatory) and the log group (optional).
+# Create an alarm
+resource "aws_cloudwatch_metric_alarm" "alarm" {
+  alarm_name = var.alarm_name
+  namespace = var.metric_namespace_name
+  # if the iam event count is > 1
+  metric_name = "${var.metric_namespace_name}/${var.metric_name}"
+  comparison_operator = "GreaterThanThreshold"
+  # with five minutes
+  evaluation_periods = 5
+  period = 60
+  # for the sum of all event counts
+  statistic = "Sum"
+  treat_missing_data = "ignore"
+  alarm_actions = [aws_sns_topic.topic.arn]
+}
