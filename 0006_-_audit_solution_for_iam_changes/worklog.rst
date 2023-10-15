@@ -1,17 +1,24 @@
-Oct 11th 2023
--------------
-* 17:59 PM EST - Create backend, project dir, readme. Carefully read through the tickets subtasks.
-* 18:00 PM EST - Looking up how to ensure that CloudTrail is enabled. I guess if you can't create a trail, it's off. Looking up how to create a trail using Terraform.
-* 18:15 PM EST - Coding the trail and supporting resources from example here: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail
-* 18:23 PM EST - Clocking out and dinner, will continue tomorrow.
+During this ticket I encountered a few problems. 
 
-Oct 12th 2023
--------------
-* 15:19 PM EST - Created a diagram, added it to the readme.
-* 15:20 PM EST - Found a module to create the trail, bucket, kms key, role, and log group. Tested resource creation. Still need a sns topic, alarm, and email subscription.
-* 15:21 PM EST - Doing the whole thing manually one time. This is taking a long time.
-* 17:00 PM EST - I'm not sure where to add the pattern to the metric alarm. I'm stuck.
+First, I wasn't sure how to filter the events. The events are filtered by though the log group settings, using the aws_cloudwatch_log_metric_filter resource.
 
-Oct 13th 2023
--------------
-* 13:17 PM EST - The pattern goes in the "metric filter" section of the log group. It isn't part of the alarm itself. You want the resource aws_cloudwatch_log_metric_filter.
+Second, I wasn't sure what I should do with the events in the metric filter. At first I thought I should extract some fields and send it with the alarms email. It turns out that I should be counting the number of events: the alarm will trigger whenever it increments. Then the admin will get an email and they can look at the log stream to review.
+
+Third, I found out that there is a race condition for sns topics. If you delete a topic and create a new one with the same name, then the subscription information that is retrieved will be from the old topic. So I have to create a new topic name every run.
+
+Finally, I ran into an issue where the trail resource could not be created, because the way I computer the bucket policy depends on the bucket and trail resources to get the arns. There was a cycle. Terraform would sometimes create the bucket, but not the bucket policy. It would not create the trail. I would get an error like this:
+╷
+│ Error: creating CloudTrail: InsufficientS3BucketPolicyException: Incorrect S3 bucket policy is detected for bucket: pp-iam-trail-logs-bucket-evergreen-perigrinate3
+│ 
+│   with module.cloudtrail.aws_cloudtrail.default[0],
+│   on .terraform/modules/cloudtrail/main.tf line 1, in resource "aws_cloudtrail" "default":
+│    1: resource "aws_cloudtrail" "default" {
+│
+
+https://docs.aws.amazon.com/awscloudtrail/latest/userguide/monitor-cloudtrail-log-files-with-cloudwatch-logs.html.
+
+https://registry.terraform.io/modules/cloudposse/cloudtrail/aws/latest
+
+https://github.com/rhythmictech/terraform-aws-cloudtrail-logging
+
+I haven't gotten the Terraform code to work yet, but it doesn't make sense to spend more time one this. I have a time limit. Instead I set it up manually and recorded a video of the process.
