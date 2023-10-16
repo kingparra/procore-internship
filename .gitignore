@@ -48,3 +48,6 @@ meeting-link.txt
 .$diagram.drawio.bkp
 .$diagram.drawio.dtmp
 
+## Auto-generated diagram state information (sensitive)
+**/.pluralith/*
+pluralith.state.json
