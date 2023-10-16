@@ -3,9 +3,9 @@ terraform {
 
   backend "s3" {
     region         = "us-east-1"
-    bucket         = "0007-createavpcfordevelopment-state"
+    bucket         = "0008-createavpcforproduction-state"
     key            = "terraform.tfstate"
-    dynamodb_table = "0007-createavpcfordevelopment-state-lock"
+    dynamodb_table = "0008-createavpcforproduction-state-lock"
     profile        = ""
     role_arn       = ""
     encrypt        = "true"
