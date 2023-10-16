@@ -20,6 +20,8 @@ Create 2 private subnets for any back-end resources.
 
 Add a nat Instance
 ^^^^^^^^^^^^^^^^^^
+Deploy a Nat Instance to route traffic from private subnets
+
 
 Implementation
 --------------
