@@ -13,7 +13,7 @@ provider "aws" {
     tags = {
       Client = "procore"
       Env = "dev"
-      TicketName = "0006_-_create_a_vpc_for_development"
+      TicketName = "0007_-_create_a_vpc_for_development"
     }
   }
 }
