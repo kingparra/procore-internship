@@ -1,6 +1,6 @@
 variable "vpc_name_prefix" {
   type = string
-  default = "dev-vpc"
+  default = "DEV-VPC"
 }
 
 variable "vpc_cidr" {
