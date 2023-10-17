@@ -17,9 +17,6 @@ module "vpc" {
   single_nat_gateway = true
   one_nat_gateway_per_az = false
 
-  # Use an externally created eip
-  external_nat_ip_ids = ["${aws_eip.nat_eip.id}"]
-
   # Control the default NACL associated with every subnet
   manage_default_network_acl = true
   # Use seperate NACLs for the public subnets
@@ -37,19 +34,4 @@ module "vpc" {
 
   # Name for the NGW
   nat_gateway_tags = { "Name" = "${var.vpc_name_prefix}-nat-gateway" }
-}
-
-# # Name for the IGW
-# resource "aws_ec2_tag" "igw_tag" {
-#   resource_id = module.vpc.igw_id
-#   key         = "Name"
-#   value       = "${var.vpc_name_prefix}-igw"
-# }
-
-# Create the eip independently of the vpc module, so we can name it.
-resource "aws_eip" "nat_eip" {
-  domain = "vpc"
-  tags = {
-    Name = "${var.vpc_name_prefix}-eip"
-  }
 }
