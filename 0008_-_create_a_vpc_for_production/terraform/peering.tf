@@ -23,7 +23,7 @@ data "aws_vpc" "dev_vpc" {
 
 
 resource "aws_vpc_peering_connection" "a_to_b_px" {
-  peer_vpc_id = module.vpc.vpc_id
-  vpc_id = data.aws_vpc.dev_vpc.id
+  peer_vpc_id = data.aws_vpc.dev_vpc.id 
+  vpc_id = module.vpc.vpc_id
   auto_accept = true
 }
