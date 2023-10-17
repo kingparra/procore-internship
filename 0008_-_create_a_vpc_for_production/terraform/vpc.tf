@@ -39,12 +39,12 @@ module "vpc" {
   nat_gateway_tags = { "Name" = "${var.vpc_name_prefix}-nat-gateway" }
 }
 
-# Name for the IGW
-resource "aws_ec2_tag" "igw_tag" {
-  resource_id = module.vpc.igw_id
-  key         = "Name"
-  value       = "${var.vpc_name_prefix}-igw"
-}
+# # Name for the IGW
+# resource "aws_ec2_tag" "igw_tag" {
+#   resource_id = module.vpc.igw_id
+#   key         = "Name"
+#   value       = "${var.vpc_name_prefix}-igw"
+# }
 
 # Create the eip independently of the vpc module, so we can name it.
 resource "aws_eip" "nat_eip" {
