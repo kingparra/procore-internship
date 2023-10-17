@@ -7,7 +7,6 @@ terraform {
     key            = "terraform.tfstate"
     dynamodb_table = "0008-createavpcforproduction-state-lock"
     profile        = ""
-    role_arn       = ""
     encrypt        = "true"
   }
 }
