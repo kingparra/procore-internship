@@ -33,6 +33,8 @@ resource "aws_vpc_peering_connection" "a_to_b_px" {
 
 # Add route to dev to all prods route tables
 resource "aws_route" "prod_to_dev" {
+  # Since the values for this for_each cannot be known until the vpc module has been created,
+  # you have to run 'terraform apply -target module.vpc first, and then 'terraform apply' again.
   for_each = setunion(module.vpc.public_route_table_ids, module.vpc.private_route_table_ids)
   route_table_id = each.value
   destination_cidr_block = "10.1.0.0/16"
