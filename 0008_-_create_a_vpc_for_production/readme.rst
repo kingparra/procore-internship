@@ -69,6 +69,6 @@ To use a non-default profile, export the environment variable
 ``AWS_PROFILE``. For example ``export AWS_PROFILE=procore`` in
 your shell.
 
-Then you can run ``terraform apply -target -target module.vpc`` to set up the vpc.
+Then you can run ``terraform apply -target module.vpc`` to set up the vpc.
 
 Afterwards, run ``terraform apply`` to create the rest of the resources.
