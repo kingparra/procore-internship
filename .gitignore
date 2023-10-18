@@ -51,3 +51,6 @@ meeting-link.txt
 ## Auto-generated diagram state information (sensitive)
 **/.pluralith/*
 pluralith.state.json
+
+## Ignore OBS video recordings
+*.mkv
