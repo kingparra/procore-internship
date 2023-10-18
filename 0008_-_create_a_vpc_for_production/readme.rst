@@ -58,3 +58,17 @@ Subnet layout
 
 .. image:: ./images/0008_subnet_layout.png
 
+How to run the code
+^^^^^^^^^^^^^^^^^^^
+To run the code, first install terraform.
+
+Then configure aws cli with your credentials, for eaxmple ``aws --profile
+procore configure``.
+
+To use a non-default profile, export the environment variable
+``AWS_PROFILE``. For example ``export AWS_PROFILE=procore`` in
+your shell.
+
+Then you can run ``terraform apply -target -target module.vpc`` to set up the vpc.
+
+Afterwards, run ``terraform apply`` to create the rest of the resources.
