@@ -11,8 +11,10 @@ document it to share with the customer.
 
 * Create a vpn site-to-site connection between your own account and the
   organization account using openswam as the customer gateway. One of our
-  engineers found a video that should explain how most of this is accomplished.
-  Setup an AWS Site-to-Site Virtual Private Network (VPN) 
+  engineers found a `video: Setup an AWS Site-to-Site VPN
+  <https://www.youtube.com/watch?v=7tTrN8WXMlg>`_
+  that should explain how most of this is accomplished.
+
 * Provide proof of a successful connection by pinging the instance in your
   organization account from your instance in your personal account.
 * Openswam must be deployed in your personal account as a t2.micro
