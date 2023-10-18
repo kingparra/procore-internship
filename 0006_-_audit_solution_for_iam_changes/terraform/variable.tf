@@ -1,37 +1,33 @@
 variable "bucket_name" {
-  default = "pp-iam-trail-logs-bucket-evergreen-perigrinate2"
+  default = "pp-iam-trail-logs-bucket-evergreen-perigrinate3"
 }
 
 variable "trial_name" {
-  default = "YT-IAM-Trail2"
+  default = "YT-IAM-Trail3"
 }
 
 variable "log_group_name" {
-  default = "YT-IAM-Trail-Logs2"
+  default = "YT-IAM-Trail-Logs3"
 }
 
 variable "log_group_retention_days" {
   default = 30
 }
 
-locals { 
-  log_group_role_name = "RoleForCloudtailToLogTo_${var.log_group_name}2"
-}
-
 variable "sns_topic_name" {
-  default = "Procore-plus-IAM-changes-kingparra-POC2"
+  default = "Procore-plus-IAM-changes-kingparra-POC3"
 }
 
 variable "metric_namespace_name" {
-  default = "iam_events2"
+  default = "iam_events3"
 }
 
 variable "metric_name" {
-  default = "iam_event_count2"
+  default = "iam_event_count3"
 }
 
 variable "alarm_name" {
-  default = "iam_event_count_alarm2"
+  default = "iam_event_count_alarm3"
 }
 
 variable "emails" {

@@ -1,5 +1,5 @@
-variable "trail_arn" {
-  description = "ARN of the CloudTrail trail that will be allowed to perform s3:PutObject and s3:GetBucketAcl on the bucket."
+variable "trail_name" {
+  description = "Name of the CloudTrail trail that will be allowed to perform s3:PutObject and s3:GetBucketAcl on the bucket."
 }
 
 variable "bucket_arn" {

@@ -1,14 +1,12 @@
 # Create the trail. This keeps track of API events.
 resource "aws_cloudtrail" "trail" {
   name = var.trial_name
-  # mandatory - an s3 bucket to log to
   s3_bucket_name = aws_s3_bucket.logs.id
-  # A CloudWatch log group to log to.
-  # aws_cloudwatch_log_group.group.arn "arn:aws:logs:us-east-1:496206821618:log-group:YT-IAM-Trail-Logs2"
-  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.group.arn}:*"
-  # A role that allows the CloudTrail service to log to the CloudWatch log group.
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.group.arn}:*" # CloudTrail requires the log stream wildcard
   cloud_watch_logs_role_arn = aws_iam_role.log_group_role.arn
   enable_log_file_validation = true
+  is_multi_region_trail = true
+  depends_on = [ module.bucket_policy_document, aws_s3_bucket.logs, aws_s3_bucket_policy.attachment ]
 }
 
 
@@ -21,7 +19,7 @@ resource "aws_s3_bucket" "logs" {
 # Create a policy that allows the trail to write to the bucket.
 module "bucket_policy_document" {
   source = "./modules/bucket_policy_document"
-  trail_arn = aws_cloudtrail.trail.arn
+  trail_name = var.trial_name
   bucket_arn = aws_s3_bucket.logs.arn
 }
 
