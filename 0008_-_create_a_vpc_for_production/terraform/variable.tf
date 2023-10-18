@@ -8,17 +8,6 @@ variable "vpc_name_prefix" {
   description = "All resources created by this module will be be prepended with prefix, in this form: {prefix}-{resource_name}."
 }
 
-
-variable "labname" {
-  type = string
-  default = "Mod8.5Project2"
-  description = "A name used for the Lab = $val tag."
-  validation {
-    condition = length(var.labname) > 3  && can(regex("^[0-9A-Za-z\\.]+$", var.labname))
-    error_message = "Must be longer than 3 characters, and only alphanumeric characters or dots. PascalCase is preferred."
-  }
-}
-
 variable "vpc_cidr" {
   type = string
   default = "10.2.0.0/16"
