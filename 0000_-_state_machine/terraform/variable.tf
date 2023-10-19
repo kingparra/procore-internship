@@ -5,5 +5,6 @@ variable "ticket_names" {
     "0006_-_audit_solution_for_iam_changes",
     "0007_-_create_a_vpc_for_development",
     "0008_-_create_a_vpc_for_production",
+    "0009_-_create_a_vpn_connection",
   ]
 }
