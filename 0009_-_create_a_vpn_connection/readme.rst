@@ -14,7 +14,6 @@ document it to share with the customer.
   engineers found a `video: Setup an AWS Site-to-Site VPN
   <https://www.youtube.com/watch?v=7tTrN8WXMlg>`_
   that should explain how most of this is accomplished.
-
 * Provide proof of a successful connection by pinging the instance in your
   organization account from your instance in your personal account.
 * Openswam must be deployed in your personal account as a t2.micro
@@ -31,7 +30,7 @@ machines, as well as VPN tunnels, both between corporate networks and for
 mobile clients. It is compatible with a large number of operating systems and
 proprietary solutions.
 
-Configure the WAS site to site VPN
+Configure the AWS site to site VPN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Go through the process of creating a VPN connection from the company's account
 to your personal account.
