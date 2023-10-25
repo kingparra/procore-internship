@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -x
+
+yum update -y
+
+yum install -y openswan
+
+cat > /etc/sysctl.conf << "EOF"
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+EOF
+
+sysctl -p
+
+cat > /etc/ipsec.d/aws.conf << EOF
+conn Tunnel2
+	authby=secret
+	auto=start
+	left=%defaultroute
+	# tunnel 1 outside ip address
+	# aws_vpn_connection.vpn.tunnel1_address
+	leftid=${tunnel1_address}
+	# tunnel 2 outside ip address
+	# aws_vpn_connection.vpn.tunnel2_address
+	right=${tunnel2_address}
+	type=tunnel
+	ikelifetime=8h
+	keylife=1h
+	phase2alg=aes128-sha1;modp1024
+	ike=aes128-sha1;modp1024
+	keyingtries=%forever
+	keyexchange=ike
+	# module.onprem_vpc.vpc_cidr_block
+	# onprem_vpc cidr
+	leftsubnet=${onsite_cidr}
+	# module.cloud_vpc.vpc_cidr_block
+	# cloud_vpc cidr
+	rightsubnet=${offsite_cidr}
+	dpddelay=10
+	dpdtimeout=30
+	dpdaction=restart_by_peer
+EOF
+
+cat > /etc/ipsec.d/aws.secrets << EOF
+${tunnel1_address} ${tunnel_outside_address}: PSK "${tunnel1_preshared_key}"
+EOF
+
+systemctl enable --now ipsec
+
+systemctl status ipsec
