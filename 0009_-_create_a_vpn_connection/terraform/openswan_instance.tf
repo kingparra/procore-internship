@@ -1,6 +1,20 @@
+# ###########################
+# Key Pair
 #############################
+resource "tls_private_key" "key_contents" {
+  algorithm = "ED25519"
+}
+
+resource "aws_key_pair" "key_object" {
+  provider = aws.personal
+  key_name = var.key_pair_name
+  public_key = tls_private_key.key_contents.public_key_openssh
+}
+
+
+############################
 # AMI for openswan instance
-#############################
+############################
 data "aws_ami" "amzlinux" {
   most_recent = true
   owners = ["amazon"]
@@ -19,9 +33,9 @@ data "aws_ami" "amzlinux" {
   }
 }
 
-###########################
+####################
 # Openswan instance
-###########################
+####################
 resource "aws_instance" "openswan" {
   ami = data.aws_ami.amzlinux.id
   provider = aws.personal
@@ -31,17 +45,7 @@ resource "aws_instance" "openswan" {
   vpc_security_group_ids = [ aws_security_group.openswansg.id ]
   subnet_id = module.onprem_vpc.public_subnets[0]
   user_data_replace_on_change = true # destroy and recreate when user_data changes
-  user_data = templatefile(
-    "${path.module}/templates/userdata.bash.tftpl",
-    {
-      tunnel1_address = aws_vpn_connection.vpn.tunnel1_address,
-      tunnel2_address = aws_vpn_connection.vpn.tunnel2_address,
-      onsite_cidr = module.onprem_vpc.vpc_cidr_block,
-      offsite_cidr = module.cloud_vpc.vpc_cidr_block,
-      tunnel_outside_address = aws_vpn_connection.vpn.outside_ip_address,
-      tunnel1_preshared_key = aws_vpn_connection.vpn.tunnel1_preshared_key
-    })
-  key_name = "openswan_lab"
+  key_name = var.key_pair_name
   tags = {
     Name = "openswan"
   }

@@ -32,7 +32,7 @@ resource "aws_vpn_connection" "vpn" {
 
 # 4 Attach the virtual private gateway to the vpc.
 # What does attaching the vpg to the vpc actually do?
-# It makes it possible to allow route prop on route tables in that vpc.
+# This makes it possible to allow route prop on rtbs in the vpc.
 resource "aws_vpn_gateway_attachment" "vgw_attach" {
   vpc_id = module.cloud_vpc.vpc_id
   vpn_gateway_id = aws_vpn_gateway.vpg.id
@@ -42,9 +42,9 @@ resource "aws_vpn_gateway_attachment" "vgw_attach" {
 # This means we can get routes from the vpn endpoint.
 resource "aws_vpn_gateway_route_propagation" "prop" {
   for_each = setunion(
-    module.cloud_vpc.vpc_main_route_table_id,
-    module.cloud_vpc.vpc_public_route_table_ids,
-    module.cloud_vpc.vpc_private_route_table_ids
+    toset([module.cloud_vpc.vpc_main_route_table_id]), # string
+    toset(module.cloud_vpc.public_route_table_ids), # no attribute
+    toset(module.cloud_vpc.private_route_table_ids) # no attribute
   )
   vpn_gateway_id = aws_vpn_gateway.vpg.id
   route_table_id = each.value
@@ -54,15 +54,15 @@ resource "aws_vpn_gateway_route_propagation" "prop" {
 # Actually, get the following inputs and generate a template for the openswan instances user_data.
 
 
-# 7 In the onprem vpc, create routes to the cloud vpc.
-resource "aws_route" "rt_to_cloud" {
-  provider = aws.personal
-  for_each = setunion(
-    module.onsite_vpc.vpc_main_route_table_id,
-    module.onsite_vpc.vpc_public_route_table_ids,
-    module.onsite_vpc.vpc_private_route_table_ids
-  )
-  route_table_id = each.value
-  destination_cidr_block = module.cloud_vpc.vpc_cidr_block
-  instance_id = aws_instance.openswan.id
-}
+# # 7 In the onprem vpc, create routes to the cloud vpc.
+# resource "aws_route" "rt_to_cloud" {
+#   provider = aws.personal
+#   # for_each = setunion(
+#   #   toset([module.onprem_vpc.vpc_main_route_table_id]),
+#   #   toset(module.onprem_vpc.public_route_table_ids),
+#   #   toset(module.onprem_vpc.private_route_table_ids)
+#   # )
+#   route_table_id = module.onprem_vpc.vpc_main_route_table_id
+#   destination_cidr_block = module.cloud_vpc.vpc_cidr_block
+#   instance_id = aws_instance.openswan.id
+# }

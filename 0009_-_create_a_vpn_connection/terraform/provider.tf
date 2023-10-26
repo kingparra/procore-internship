@@ -34,3 +34,6 @@ provider "aws" {
     }
   }
 }
+
+# To create a key material for the openswan keypair
+provider "tls" {}
