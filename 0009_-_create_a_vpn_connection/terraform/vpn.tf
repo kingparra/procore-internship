@@ -43,8 +43,8 @@ resource "aws_vpn_gateway_attachment" "vgw_attach" {
 resource "aws_vpn_gateway_route_propagation" "prop" {
   for_each = setunion(
     toset([module.cloud_vpc.vpc_main_route_table_id]), # string
-    toset(module.cloud_vpc.public_route_table_ids), # no attribute
-    toset(module.cloud_vpc.private_route_table_ids) # no attribute
+    toset(module.cloud_vpc.public_route_table_ids),
+    toset(module.cloud_vpc.private_route_table_ids)
   )
   vpn_gateway_id = aws_vpn_gateway.vpg.id
   route_table_id = each.value
