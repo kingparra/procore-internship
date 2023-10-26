@@ -54,15 +54,15 @@ resource "aws_vpn_gateway_route_propagation" "prop" {
 # Actually, get the following inputs and generate a template for the openswan instances user_data.
 
 
-# # 7 In the onprem vpc, create routes to the cloud vpc.
-# resource "aws_route" "rt_to_cloud" {
-#   provider = aws.personal
-#   # for_each = setunion(
-#   #   toset([module.onprem_vpc.vpc_main_route_table_id]),
-#   #   toset(module.onprem_vpc.public_route_table_ids),
-#   #   toset(module.onprem_vpc.private_route_table_ids)
-#   # )
-#   route_table_id = module.onprem_vpc.vpc_main_route_table_id
-#   destination_cidr_block = module.cloud_vpc.vpc_cidr_block
-#   instance_id = aws_instance.openswan.id
-# }
+# 7 In the onprem vpc, create routes to the cloud vpc.
+resource "aws_route" "rt_to_cloud" {
+  provider = aws.personal
+  for_each = setunion(
+    toset([module.onprem_vpc.vpc_main_route_table_id]),
+    toset(module.onprem_vpc.public_route_table_ids),
+    toset(module.onprem_vpc.private_route_table_ids)
+  )
+  route_table_id = each.value
+  destination_cidr_block = module.cloud_vpc.vpc_cidr_block
+  network_interface_id = aws_instance.openswan.primary_network_interface_id
+}
