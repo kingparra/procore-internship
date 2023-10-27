@@ -49,6 +49,9 @@ Requirements:
 Provide the ALB dns so we can verify that everything is working.
 
 
-..
-  Implementation
-  --------------
+Implementation
+--------------
+
+Push website code to codecommit repo from local computer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please see ``1_-_push_website_code`` for scripts to set up codecommit creds and upload the files.

@@ -10,6 +10,5 @@ unzip procore-website-master.zip
 mv procore-website-master/* .
 rm -rf procore-website-master.zip procore-website-master/
 git add .
-fatal: bad revision 'HEAD'
 git commit -m 'Init repo with existing files'
 git push -u origin master
