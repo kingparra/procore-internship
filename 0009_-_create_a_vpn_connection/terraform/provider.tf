@@ -37,3 +37,6 @@ provider "aws" {
 
 # To create a key material for the openswan keypair
 provider "tls" {}
+
+# To create user-data script for the openswan instance
+provider "template" {}

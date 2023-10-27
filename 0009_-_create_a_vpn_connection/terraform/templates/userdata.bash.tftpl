@@ -13,6 +13,9 @@ EOF
 
 sysctl -p
 
+
+
+# leftid should be 100.24.55.238 but is not
 cat > /etc/ipsec.d/aws.conf << EOF
 conn Tunnel2
 	authby=secret
@@ -20,10 +23,10 @@ conn Tunnel2
 	left=%defaultroute
 	# tunnel 1 outside ip address
 	# aws_vpn_connection.vpn.tunnel1_address
-	leftid=${tunnel1_address}
+	leftid=${leftid}
 	# tunnel 2 outside ip address
 	# aws_vpn_connection.vpn.tunnel2_address
-	right=${tunnel2_address}
+	right=${right}
 	type=tunnel
 	ikelifetime=8h
 	keylife=1h
@@ -42,8 +45,9 @@ conn Tunnel2
 	dpdaction=restart_by_peer
 EOF
 
+# This part is correct
 cat > /etc/ipsec.d/aws.secrets << EOF
-${tunnel1_address} ${tunnel_outside_address}: PSK "${tunnel1_preshared_key}"
+${leftid} ${tunnel_outside_address}: PSK "${tunnel1_preshared_key}"
 EOF
 
 systemctl enable --now ipsec

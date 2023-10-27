@@ -38,14 +38,18 @@ resource "aws_vpn_gateway_attachment" "vgw_attach" {
   vpn_gateway_id = aws_vpn_gateway.vpg.id
 }
 
+locals {
+cloud_main_rtb = [module.cloud_vpc.vpc_main_route_table_id,]
+} 
+
 # 5 Enable route propagation on all of the rtbs in the offsite vpc.
 # This means we can get routes from the vpn endpoint.
 resource "aws_vpn_gateway_route_propagation" "prop" {
-  for_each = setunion(
-    toset([module.cloud_vpc.vpc_main_route_table_id]), # string
-    toset(module.cloud_vpc.public_route_table_ids),
-    toset(module.cloud_vpc.private_route_table_ids)
-  )
+  for_each = toset([
+    local.cloud_main_rtb[0],
+    module.cloud_vpc.public_route_table_ids[0],
+    module.cloud_vpc.private_route_table_ids[0],
+  ])
   vpn_gateway_id = aws_vpn_gateway.vpg.id
   route_table_id = each.value
 }
@@ -53,15 +57,18 @@ resource "aws_vpn_gateway_route_propagation" "prop" {
 # 6 Download the configuration from the VPN connection, onprem_conn.
 # Actually, get the following inputs and generate a template for the openswan instances user_data.
 
+locals {
+onprem_main_rtb = [module.onprem_vpc.vpc_main_route_table_id,]
+} 
 
 # 7 In the onprem vpc, create routes to the cloud vpc.
 resource "aws_route" "rt_to_cloud" {
   provider = aws.personal
-  for_each = setunion(
-    toset([module.onprem_vpc.vpc_main_route_table_id]),
-    toset(module.onprem_vpc.public_route_table_ids),
-    toset(module.onprem_vpc.private_route_table_ids)
-  )
+  for_each = toset([
+    local.onprem_main_rtb[0],
+    module.onprem_vpc.public_route_table_ids[0],
+    module.onprem_vpc.private_route_table_ids[0],
+  ])
   route_table_id = each.value
   destination_cidr_block = module.cloud_vpc.vpc_cidr_block
   network_interface_id = aws_instance.openswan.primary_network_interface_id
