@@ -54,3 +54,7 @@ pluralith.state.json
 
 ## Ignore OBS video recordings
 *.mkv
+
+# Backup and swap files for drawio
+**/.*.drawio.bkp
+**/.*.drawio.dtmp'
