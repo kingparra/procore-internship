@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-## In order to clone the repo from the
-## instances, set up an instance profile
-## with a role that has the 
-## AWSCodeCommitPowerUser policy attached.
+# You need the AWSCodeCommitPowerUser policy to clone with git-remote-codecommit.
 
 yum install -y python3-pip git httpd
 
-# remote-codecommit will not work when run as root
-sudo -u ec2-user python3 -m pip install --user git-remote-codecommit
-sudo -u ec2-user git clone codecommit::us-east-1://procore-website ~ec2-user/procore-website
+python3 -m venv .venv-procore-website
 
-mv ~ec2-user/procore-website/* /var/www/html/
-rm -rf ~ec2-user/procore-website
+source .venv-procore-website/bin/activate
+
+pip install git-remote-codecommit
+
+git clone codecommit::us-east-1://procore-website /var/www/html/
+
+systemctl enable --now httpd
