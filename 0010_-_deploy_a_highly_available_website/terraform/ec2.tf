@@ -12,6 +12,13 @@ data "aws_subnets" "prod_vpc_public_subnets" {
     name   = "vpc-id"
     values = [data.aws_vpc.prod_vpc.id]
   }
+  filter {
+    name = "tag:Name"
+    values = [
+      "PROD-VPC-public-subnet-1",
+      "PROD-VPC-public-subnet-2"
+    ]
+  }
 }
 
 data "aws_ami" "amzlinux" {
