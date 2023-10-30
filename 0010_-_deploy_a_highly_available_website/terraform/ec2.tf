@@ -94,3 +94,13 @@ resource "aws_launch_template" "lt" {
     }
   }
 }
+
+resource "aws_lb" "alb" {
+  name = "procore-website-alb"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = [ aws_security_group.web.id ]
+  subnets = data.aws_subnets.prod_vpc_public_subnets.ids
+  ip_address_type = "ipv4"
+}
+
