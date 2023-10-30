@@ -66,7 +66,6 @@ resource "aws_launch_template" "lt" {
   name                   = "procore-website-lt"
   image_id               = data.aws_ami.amzlinux.id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.web.id]
   user_data              = filebase64("${path.module}/../user_data/user_data.bash")
   key_name               = var.key_pair_name
   # Set the version of the lt to use to latest
@@ -79,6 +78,7 @@ resource "aws_launch_template" "lt" {
   }
   network_interfaces {
     associate_public_ip_address = true
+    security_groups = [aws_security_group.web.id]
   }
   tag_specifications {
     resource_type = "instance"
