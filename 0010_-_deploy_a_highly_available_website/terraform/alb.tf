@@ -6,7 +6,7 @@ module "alb" {
   version = "1.10.0"
 
   vpc_id             = data.aws_vpc.dev_vpc.id
-  security_group_ids = [aws_security_group.web.id]
+
   subnet_ids         = data.aws_subnets.dev_vpc_public_subnets.ids
   internal           = false
   http_enabled       = true
