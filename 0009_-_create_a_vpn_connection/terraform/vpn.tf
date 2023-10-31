@@ -25,6 +25,8 @@ resource "aws_vpn_connection" "vpn" {
   customer_gateway_id = aws_customer_gateway.cgw.id
   type = "ipsec.1"
   static_routes_only = true
+  local_ipv4_network_cidr = module.onprem_vpc.vpc_cidr_block
+  remote_ipv4_network_cidr = module.cloud_vpc.vpc_cidr_block
   tags = {
     Name = "onprem_conn"
   }
