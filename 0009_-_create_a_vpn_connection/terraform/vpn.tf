@@ -18,8 +18,7 @@ resource "aws_vpn_gateway" "vpg" {
   }
 }
 
-# 3 Create the VPN connection
-# The connection provides 
+# 3 Create the VPN connection and static routes
 resource "aws_vpn_connection" "vpn" {
   vpn_gateway_id = aws_vpn_gateway.vpg.id
   customer_gateway_id = aws_customer_gateway.cgw.id
@@ -30,6 +29,16 @@ resource "aws_vpn_connection" "vpn" {
   tags = {
     Name = "onprem_conn"
   }
+}
+
+resource "aws_vpn_connection_route" "rt_to_cloud" {
+  destination_cidr_block = module.cloud_vpc.vpc_cidr_block
+  vpn_connection_id = aws_vpn_connection.vpn.id
+}
+
+resource "aws_vpn_connection_route" "rt_to_onprem" {
+  destination_cidr_block = module.onprem_vpc.vpc_cidr_block
+  vpn_connection_id = aws_vpn_connection.vpn.id
 }
 
 # 4 Attach the virtual private gateway to the vpc.
