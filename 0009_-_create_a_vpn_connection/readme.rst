@@ -53,6 +53,7 @@ Write documentation
 Since this solution will be shared with the customer you need to create a
 detail guide of how to accomplished this VPN connection.
 
-..
-  Implementation
-  --------------
+
+Implementation
+--------------
+.. image:: ./images/0009_diagram.drawio.png
