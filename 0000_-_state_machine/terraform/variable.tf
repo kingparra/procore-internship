@@ -6,6 +6,7 @@ variable "ticket_names" {
     "0007_-_create_a_vpc_for_development",
     "0008_-_create_a_vpc_for_production",
     "0009_-_create_a_vpn_connection",
-    "0010_-_deploy_a_highly_available_website"
+    "0010_-_deploy_a_highly_available_website",
+    "0011_-_improve_the_deployment_of_the_procore_plus_website",
   ]
 }
