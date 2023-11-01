@@ -97,9 +97,11 @@ changes applied.
 
 Implementation
 --------------
-The code for this project lives in the ``../0010*/terraform`` directory.
-You can view everything added for this ticket by
-comparing against commit id ``a722e16`` with
-``git diff a722e16 0010_-_deploy_a_highly_available_website``.
-The resources are all tagged with ``TicketName2=0011_-_improve_the_deployment_of_the_procore_plus_website``.
-I will provide a summary of them below.
+The code for this project is an extension of what is in 
+the ``../0010*/terraform`` directory, and it uses the
+same state file.
+
+You can view the differences with
+``diff 0010_-_deploy_a_highly_available_website/terraform/ 0011_-_improve_the_deployment_of_the_procore_plus_website/terraform/``.
+
+All new resources are tagged with a new ``TicketName2`` tag.
