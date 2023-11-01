@@ -29,6 +29,35 @@ data "aws_iam_policy" "codecommit" {
   arn = "arn:aws:iam::aws:policy/AWSCodeCommitPowerUser"
 }
 
+# Add permissions to instance profile for CodeDeploy agent
+data "aws_iam_policy_document" "get_agent_and_payload" {
+  statement {
+    sid = "GetCodeDeoplyAgentAndPayload"
+    effect = "Allow"
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+    ]
+    resources = [
+      "arn:aws:s3:::procoreplusproductswebsitechanges/*",
+      "arn:aws:s3:::aws-codedeploy-us-east-1/*",
+    ]
+  }
+}
+
+resource "aws_iam_policy" "get_agent_and_payload" {
+  name = "codedeploy-ec2-permissions-deploy-procore-website"
+  policy = data.aws_iam_policy_document.get_agent_and_payload.json
+  tags = {
+    "TicketName2" = var.ticket_name_2
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "get_agent_and_payload" {
+  role = aws_iam_role.deploy.name
+  policy_arn = aws_iam_policy.get_agent_and_payload.arn
+}
+
 # Add service linked role for CodeDeploy
 resource "aws_iam_role" "codedeploy" {
   name = "AWSCodeDeployRole"
@@ -45,6 +74,9 @@ resource "aws_iam_role" "codedeploy" {
       },
     ]
   })
+  tags = {
+    "TicketName2" = var.ticket_name_2
+  }
 }
 
 data "aws_iam_policy" "codedeploy" {
