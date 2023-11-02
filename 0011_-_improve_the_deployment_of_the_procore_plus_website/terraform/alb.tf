@@ -5,12 +5,12 @@ module "alb" {
   name    = "procore-website-alb"
   version = "1.10.0"
 
-  vpc_id             = data.aws_vpc.dev_vpc.id
+  vpc_id = data.aws_vpc.dev_vpc.id
 
-  subnet_ids         = data.aws_subnets.dev_vpc_public_subnets.ids
-  internal           = false
-  http_enabled       = true
-  ip_address_type    = "ipv4"
+  subnet_ids      = data.aws_subnets.dev_vpc_public_subnets.ids
+  internal        = false
+  http_enabled    = true
+  ip_address_type = "ipv4"
 
   access_logs_enabled = true
 

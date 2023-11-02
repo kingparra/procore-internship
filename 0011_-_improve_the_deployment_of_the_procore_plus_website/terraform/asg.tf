@@ -16,27 +16,27 @@ resource "aws_autoscaling_group" "asg" {
   # This corresponds to checking "enable group metrics collection" in the web ui.
   metrics_granularity = "1Minute"
   enabled_metrics = [
-      "GroupPendingInstances"
-    , "GroupDesiredCapacity"
-    , "GroupInServiceCapacity"
-    , "GroupInServiceInstances"
-    , "GroupMaxSize"
-    , "WarmPoolPendingCapacity"
-    , "WarmPoolTerminatingCapacity"
-    , "GroupTerminatingCapacity"
-    , "WarmPoolTotalCapacity"
-    , "GroupPendingCapacity"
-    , "GroupTerminatingInstances"
-    , "WarmPoolMinSize"
-    , "GroupAndWarmPoolDesiredCapacity"
-    , "GroupTotalInstances"
-    , "WarmPoolDesiredCapacity"
-    , "WarmPoolWarmedCapacity"
-    , "GroupAndWarmPoolTotalCapacity"
-    , "GroupStandbyCapacity"
-    , "GroupTotalCapacity"
-    , "GroupMinSize"
-    , "GroupStandbyInstances"
+    "GroupPendingInstances",
+    "GroupDesiredCapacity",
+    "GroupInServiceCapacity",
+    "GroupInServiceInstances",
+    "GroupMaxSize",
+    "WarmPoolPendingCapacity",
+    "WarmPoolTerminatingCapacity",
+    "GroupTerminatingCapacity",
+    "WarmPoolTotalCapacity",
+    "GroupPendingCapacity",
+    "GroupTerminatingInstances",
+    "WarmPoolMinSize",
+    "GroupAndWarmPoolDesiredCapacity",
+    "GroupTotalInstances",
+    "WarmPoolDesiredCapacity",
+    "WarmPoolWarmedCapacity",
+    "GroupAndWarmPoolTotalCapacity",
+    "GroupStandbyCapacity",
+    "GroupTotalCapacity",
+    "GroupMinSize",
+    "GroupStandbyInstances",
   ]
 }
 

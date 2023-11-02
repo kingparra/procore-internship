@@ -9,3 +9,16 @@ variable "ticket_name_2" {
 variable "key_pair_name" {
   default = "precision-procore"
 }
+
+variable "pipeline_name" {
+  default = "procore-website"
+}
+
+variable "application_name" {
+  description = "The name of the CodeBuild appilcation"
+  default = "procore-website"
+}
+
+variable "deployment_group_name" {
+  default = "procore-website-instances"
+}
