@@ -23,7 +23,7 @@ resource "aws_codepipeline" "codepipeline" {
       version          = "1"
       output_artifacts = ["SourceArtifact"]
       configuration = {
-        RepositoryName  = aws_codecommit_repository.procore_website.arn
+        RepositoryName  = var.repo_name
         BranchName       = "master"
       }
     }

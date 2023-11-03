@@ -10,6 +10,10 @@ variable "key_pair_name" {
   default = "precision-procore"
 }
 
+variable "repo_name" {
+  default = "procore-website"
+}
+
 variable "pipeline_name" {
   default = "procore-website"
 }
