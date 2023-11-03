@@ -101,7 +101,7 @@ The code for this project is an extension of what is in
 the ``../0010*/terraform`` directory, and it uses the
 same state file.
 
-You can view the differences with
-``diff 0010_-_deploy_a_highly_available_website/terraform/ 0011_-_improve_the_deployment_of_the_procore_plus_website/terraform/``.
+I did not get around to automating this ticket.
+There is a partial solution, but the deployment group is not targeting the ASG as it should.
+I completed this manually and documented it with too many screenshots.
 
-All new resources are tagged with a new ``TicketName2`` tag.
