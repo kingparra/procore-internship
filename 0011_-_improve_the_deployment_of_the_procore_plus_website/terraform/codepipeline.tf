@@ -38,7 +38,7 @@ resource "aws_codepipeline" "codepipeline" {
       input_artifacts = ["SourceArtifact"]
       version         = "1"
       configuration = {
-        ApplicationName = var.application_name
+        ApplicationName = aws_codedeploy_app.website.name
         DeploymentGroupName = var.deployment_group_name
       }
     }
