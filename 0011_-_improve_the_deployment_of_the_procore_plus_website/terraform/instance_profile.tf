@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "get_agent" {
     ]
     resources = [
       "arn:aws:s3:::aws-codedeploy-us-east-1/*",
-      "arn:aws:s3:::codepipeline-us-east-1-106697935655/*"
+      "${aws_s3_bucket.codepipeline_bucket.arn}/*"
     ]
   }
 }
