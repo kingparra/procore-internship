@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 import argparse
+import logging
+import sys
 
 
 def parse_xml(xml_data, onprem_cidr, remote_cidr):
@@ -40,7 +42,16 @@ if __name__ == "__main__":
     parser.add_argument("onprem_cidr", help="CIDR of onprem VPC")
     parser.add_argument("remote_cidr", help="CIDR of remote VPC")
     args = parser.parse_args()
-    with open(args.xml_file, "r") as file:
-        contents = file.read()
-        print(parse_xml(contents, args.onprem_cidr, args.remote_cidr))
+    try:
+        with open(args.xml_file, "r") as file:
+            contents = file.read()
+            print(parse_xml(contents, args.onprem_cidr, args.remote_cidr))
+    except FileNotFoundError:
+        logging.error(f"{sys.argv[0]} Error: The XML file {args.xml_file} does not exist.")
+        sys.exit(1)
+    except PermissionError:
+        logging.error(f"T{sys.argv[0]} Error: The XML file {args.xml_file} is not accessible with the current permissions.")
+    except ET.ParseError:
+        logging.error("{sys.argv[0]} Error: Failed to parse the XML data.")
+        sys.exit(1)
 
