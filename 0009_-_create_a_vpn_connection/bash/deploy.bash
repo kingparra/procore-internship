@@ -125,15 +125,12 @@ aws ec2 create-vpn-connection-route \
 
 # At this point, you have to go to the web console to download the configuration 
 # from the vpn connection page for openswan.
-#
-# Or, you can write a program to parse the output of this xml and generate the
-# configuration files you need.
-#
-#  aws ec2 describe-vpn-connections \
-#    --query "VpnConnections[?Tags[?Key=='Name' && Value=='onprem_conn']].CustomerGatewayConfiguration" \
-#    --output text
-#
-# After you've configured openswan on your on-prem server, you
-# should add a static route to the openswan server for the 10.3.0.0/16
-# network. When you on-prem network is a VPC, add that route to all
-# of your VPCs route tables.
+
+
+# Or you can save the output of CustomerGatewayConfiguration to a file 
+aws ec2 describe-vpn-connections \
+  --query "VpnConnections[?Tags[?Key=='Name' && Value=='onprem_conn']].CustomerGatewayConfiguration" \
+  --output text > output.xml
+
+# and use this script to parse it into the config file you need
+./parsexml.py output.xml 10.4.0.0/16 10.3.0.0/16
