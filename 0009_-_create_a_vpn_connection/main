@@ -18,6 +18,8 @@ aws ec2 describe-vpn-connections \
 
 # Use a python script to convert the xml file into openswan config files.
 # This will create ./parsexml/output/{tun1,tun2}.{conf,secrets}
+mkdir -p ./parsexml/{input,output}
+
 ./parsexml/parsexml.py \
   --onprem-cidr $(terraform -chdir=terraform output -raw onprem_vpc_cidr) \
   --remote-cidr $(terraform -chdir=terraform output -raw cloud_vpc_cidr) \
