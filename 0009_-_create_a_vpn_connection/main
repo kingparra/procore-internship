@@ -42,3 +42,5 @@ ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@host \
   'sudo yum install -y openswan;
    sudo mv -v ~ec2-user/*.{conf,secrets} /etc/ipsec.d/;
    sudo systemctl enable --now ipsec'
+
+rm private_key.pem
