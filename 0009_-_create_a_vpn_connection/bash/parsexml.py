@@ -7,9 +7,11 @@ def parse_xml(xml_data):
     root = ET.fromstring(xml_data)
 
     params = {
+        'tun1_name': 'Tunnel1',
         'tun1_cgw': root.find('.//ipsec_tunnel[1]/customer_gateway/tunnel_outside_address/ip_address').text,
         'tun1_vgw': root.find('.//ipsec_tunnel[1]/vpn_gateway/tunnel_outside_address/ip_address').text,
         'tun1_psk': root.find('.//ipsec_tunnel[1]/ike/pre_shared_key').text,
+        'tun2_name': 'Tunnel2',
         'tun2_cgw': root.find('.//ipsec_tunnel[2]/customer_gateway/tunnel_outside_address/ip_address').text,
         'tun2_vgw': root.find('.//ipsec_tunnel[2]/vpn_gateway/tunnel_outside_address/ip_address').text,
         'tun2_psk': root.find('.//ipsec_tunnel[2]/ike/pre_shared_key').text
@@ -18,9 +20,9 @@ def parse_xml(xml_data):
     return params
 
 
-def generate_tunnel_config(cgw, vgw, onprem_cidr, remote_cidr):
+def generate_config(name, cgw, vgw, onprem_cidr, remote_cidr):
     openswan_config = textwrap.dedent(f"""\
-        conn Tunnel1
+        conn {name}
           authby=secret
           auto=start
           left=%defaultroute
@@ -58,39 +60,21 @@ def main():
     with open(args.xml_file, "r") as file:
         params = parse_xml(file.read())
 
-        tun1_config   = generate_tunnel_config(params["tun1_cgw"],
-                                               params["tun1_vgw"],
-                                               args.onprem_cidr,
-                                               args.remote_cidr)
+        for tunnel in ["tun1", "tun2"]:
 
-        with open('tun1.conf', 'w') as config_file:
-            config_file.write(tun1_config)
-            print("Tunnel1 Configuration has been written to 'tun1.conf'")
+            with open(f'{tunnel}.conf', 'w') as config_file:
+                config_file.write(generate_config(params[f"{tunnel}_name"],
+                                                  params[f"{tunnel}_cgw"],
+                                                  params[f"{tunnel}_vgw"],
+                                                  args.onprem_cidr,
+                                                  args.remote_cidr))
+                print(f"{tunnel} Configuration has been written to '{tunnel}.conf'")
 
-        tun1_secrets  = generate_secrets(params["tun1_cgw"],
-                                         params["tun1_vgw"], 
-                                         params["tun1_psk"])
-
-        with open('tun1.secrets', 'w') as secrets_file:
-            secrets_file.write(tun1_secrets)
-            print("Tunnel1 Secrets Configuration has been written to 'tun1.secrets'")
-
-        tun2_config   = generate_tunnel_config(params["tun2_cgw"],
-                                               params["tun2_vgw"],
-                                               args.onprem_cidr,
-                                               args.remote_cidr)
-
-        with open('tun2.conf', 'w') as secrets_file:
-            secrets_file.write(tun2_config)
-            print("Tunnel2 Configuration has been written to 'tun2.conf'")
-
-        tun2_secrets  = generate_secrets(params["tun2_cgw"],
-                                         params["tun2_vgw"], 
-                                         params["tun2_psk"])
-
-        with open('tun2.secrets', 'w') as secrets_file:
-            secrets_file.write(tun2_secrets)
-            print("Tunnel2 Secrets Configuration has been written to 'tun2.secrets'")
+            with open(f'{tunnel}.secrets', 'w') as secrets_file:
+                secrets_file.write(generate_secrets(params[f"{tunnel}_cgw"],
+                                                    params[f"{tunnel}_vgw"],
+                                                    params[f"{tunnel}_psk"]))
+                print(f"{tunnel} Secrets Configuration has been written to '{tunnel}.secrets'")
 
 
 if __name__ == "__main__":
