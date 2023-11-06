@@ -38,8 +38,19 @@ for f in ./parsexml/output/*; do
   scp -i private_key.pem "$f" "ec2-user@$host:"
 done
 
-ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@host \
+# Create sysctl.conf file and transfer
+echo \
+'net.ipv4.ip_forward = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+' > ./parsexml/output/sysctl.conf
+
+scp -i private_key.pem ./parsexml/output/sysctl.conf "ec2-user@$host:"
+
+ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@$host \
   'sudo yum install -y openswan;
+   sudo mv -fv sysctl.conf /etc/
+   sudo sysctl -p
    sudo mv -v ~ec2-user/*.{conf,secrets} /etc/ipsec.d/;
    sudo systemctl enable --now ipsec'
 
