@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# This script is the main entry point to the automation
+# to set up a site-to-site vpn connection. Run this instead
+# of terraform apply'ing directly.
+
+# Create the VPCs separately, first.
+terraform -chdir=terraform apply -target module.cloud_vpc -auto-approve
+terraform -chdir=terraform apply -target module.onprem_vpc -auto-approve
+
+# Create the the ec2 openswan server and vpn resources.
+terraform -chdir=terraform apply -auto-approve
+
+# Get the vpn configuration data and save it to an xml file.
+aws ec2 describe-vpn-connections \
+  --query "VpnConnections[?Tags[?Key=='Name' && Value=='onprem_conn']].CustomerGatewayConfiguration" \
+  --output text > ./parsexml/input/config.xml
+
+# Use a python script to convert the xml file into openswan config files.
+# This will create ./parsexml/output/{tun1,tun2}.{conf,secrets}
+./parsexml/parsexml.py \
+  --onprem-cidr $(terraform -chdir=terraform output -raw onprem_vpc_cidr) \
+  --remote-cidr $(terraform -chdir=terraform output -raw cloud_vpc_cidr) \
+  --file ./parsexml/input/config.xml \
+  --output-dir ./parsexml/output/
+
+# Output the private key contents to a file
+terraform -chdir=terraform output -raw private_key > private_key.pem
+chmod 0600 ./private_key.pem
+
+# Get the ip address of the openswan server
+host=$(terraform -chdir=terraform output -raw openswan_ip)
+
+# Transfer config files to ec2-user's home dir
+for f in ./parsexml/output/*; do
+  scp -i private_key.pem "$f" "ec2-user@$host:"
+done
+
+ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@host \
+  'sudo yum install -y openswan;
+   sudo mv -v ~ec2-user/*.{conf,secrets} /etc/ipsec.d/;
+   sudo systemctl enable --now ipsec'

@@ -1,11 +1,11 @@
+#!/usr/bin/env python3
 import xml.etree.ElementTree as ET
 import argparse
 import textwrap
-
+from os.path import sep
 
 def parse_xml(xml_data):
     root = ET.fromstring(xml_data)
-
     params = {
         'tun1_name': 'Tunnel1',
         'tun1_cgw': root.find('.//ipsec_tunnel[1]/customer_gateway/tunnel_outside_address/ip_address').text,
@@ -16,7 +16,6 @@ def parse_xml(xml_data):
         'tun2_vgw': root.find('.//ipsec_tunnel[2]/vpn_gateway/tunnel_outside_address/ip_address').text,
         'tun2_psk': root.find('.//ipsec_tunnel[2]/ike/pre_shared_key').text
     }
-
     return params
 
 
@@ -43,18 +42,20 @@ def generate_config(name, cgw, vgw, onprem_cidr, remote_cidr):
         """)
     return openswan_config
 
-# con Tunnel2
-#   right=52.6.16.169
 
 def generate_secrets(cgw, vgw, psk):
     return f"{cgw} {vgw}: PSK \"{psk}\""
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate openswan config file from xml")
-    parser.add_argument("xml_file", help="XML file containing VPN connection data")
-    parser.add_argument("onprem_cidr", help="CIDR of onprem VPC")
-    parser.add_argument("remote_cidr", help="CIDR of remote VPC")
+    parser = argparse.ArgumentParser(
+        prog='parsexml',
+        description="Generate openswan config file from xml"
+        )
+    parser.add_argument("-f", "--file", dest="xml_file", help="XML file containing VPN connection data")
+    parser.add_argument("--onprem-cidr", dest="onprem_cidr", help="CIDR of onprem VPC")
+    parser.add_argument("--remote-cidr", dest="remote_cidr", help="CIDR of remote VPC")
+    parser.add_argument("-o", "--output-dir", dest="output_dir", help="Directory to save config files to.")
     args = parser.parse_args()
 
     with open(args.xml_file, "r") as file:
@@ -62,7 +63,7 @@ def main():
 
         for tunnel in ["tun1", "tun2"]:
 
-            with open(f'{tunnel}.conf', 'w') as config_file:
+            with open(f'{args.output_dir}{sep}{tunnel}.conf', 'w') as config_file:
                 config_file.write(generate_config(params[f"{tunnel}_name"],
                                                   params[f"{tunnel}_cgw"],
                                                   params[f"{tunnel}_vgw"],
@@ -70,7 +71,7 @@ def main():
                                                   args.remote_cidr))
                 print(f"{tunnel} Configuration has been written to '{tunnel}.conf'")
 
-            with open(f'{tunnel}.secrets', 'w') as secrets_file:
+            with open(f'{args.output_dir}{sep}{tunnel}.secrets', 'w') as secrets_file:
                 secrets_file.write(generate_secrets(params[f"{tunnel}_cgw"],
                                                     params[f"{tunnel}_vgw"],
                                                     params[f"{tunnel}_psk"]))
