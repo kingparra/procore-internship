@@ -121,3 +121,7 @@ In the on-prem network
   The connection should now be up. Test by pinging in both
   directions and use additional host in on-premises DC to ping
   EC2 instance in AWS VPC (update route table).
+
+* Add a route to the instance in all of the on-prem route tables.
+
+  .. image: ./images/add_static_route_to_rtbs.gif
