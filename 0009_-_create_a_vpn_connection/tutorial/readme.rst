@@ -124,4 +124,4 @@ In the on-prem network
 
 * Add a route to the instance in all of the on-prem route tables.
 
-  .. image: ./images/add_static_route_to_rtbs.gif
+  .. image:: ./images/add_static_route_to_rtbs.gif
