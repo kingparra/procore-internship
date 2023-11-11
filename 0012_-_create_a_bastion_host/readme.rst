@@ -40,3 +40,9 @@ Design Considerations
       LOG OFF IMMEDIATELY if you do not agree to the
       conditions stated in this warning. 
       * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Implementation
+--------------
+
+.. image:: ./images/0012_diagram.drawio.png
