@@ -192,7 +192,7 @@ resource "aws_launch_template" "lt" {
     enabled = true
   }
   network_interfaces {
-    associate_public_ip_address = true
+    associate_public_ip_address = false
     security_groups             = [aws_security_group.instances.id]
   }
   metadata_options {
