@@ -24,6 +24,21 @@ data "aws_subnets" "prod_vpc_private_subnets" {
   }
 }
 
+# used for 
+data "aws_subnets" "prod_vpc_public_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = data.aws_vpcs.prod_vpc_ids.ids
+  }
+  filter {
+    name = "tag:Name"
+    values = [
+      "PROD-VPC-public-subnet-1",
+      "PROD-VPC-public-subnet-2",
+    ]
+  }
+}
+
 # elb, tg, listner
 resource "aws_lb_target_group" "tg" {
   name     = "bastion-host-tg"
@@ -58,7 +73,7 @@ resource "aws_lb" "nlb" {
   name               = "bastion-host-nlb"
   internal           = false
   load_balancer_type = "network"
-  subnets            = data.aws_subnets.prod_vpc_private_subnets.ids
+  subnets            = data.aws_subnets.prod_vpc_public_subnets.ids
   security_groups    = [aws_security_group.nlb.id]
 }
 
