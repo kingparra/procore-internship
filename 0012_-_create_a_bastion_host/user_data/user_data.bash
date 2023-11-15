@@ -5,7 +5,9 @@ cat << EOF >> /etc/fstab
 fs-0f865ea3fe6476af2.efs.us-east-1.amazonaws.com:/ /home efs _netdev,noresvport,tls 0 0
 EOF
 
-cat << EOF /etc/motd
+mount -a
+
+cat << EOF > /etc/motd
 * * * * * * * * W A R N I N G * * * * * * * * * *
 This computer system is the property of ProCore Plus.
 It is for authorized use only. By using this system,
