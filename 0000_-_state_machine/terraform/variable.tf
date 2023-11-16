@@ -9,5 +9,6 @@ variable "ticket_names" {
     "0010_-_deploy_a_highly_available_website",
     # 11 uses the same backend as 10
     "0012_-_create_a_bastion_host",
-  ]
+    "0013_-_create_a_local_user_using_ssm",
+ ]
 }
