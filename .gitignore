@@ -58,3 +58,7 @@ pluralith.state.json
 # Backup and swap files for drawio
 **/.*.drawio.bkp
 **/.*.drawio.dtmp'
+
+# Screen recordings
+**/*.webm
+
