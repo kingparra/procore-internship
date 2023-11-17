@@ -39,3 +39,8 @@ mainSteps:
           if test -n "{{PublicKey}}"; then
             echo '{{PublicKey}}' >> ~'{{UserName}}'/.ssh/authorized_keys
           fi
+          if grep -q ^'{{UserName}}' /etc/passwd; then
+            echo "User {{UserName}} created"
+          else
+            echo "User {{UserName}} not created"
+          fi
