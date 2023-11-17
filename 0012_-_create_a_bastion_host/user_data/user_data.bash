@@ -13,7 +13,7 @@ This computer system is the property of ProCore Plus.
 It is for authorized use only. By using this system,
 all users acknowledge notice of, and agree to comply
 with, the Acceptable Use of Information Technology
-Resources Policy (“AUP”).  Unauthorized or improper
+Resources Policy ("AUP").  Unauthorized or improper
 use of this system may result in administrative
 disciplinary action, civil charges/criminal penalties,
 and/or other sanctions as set forth in the AUP. By
