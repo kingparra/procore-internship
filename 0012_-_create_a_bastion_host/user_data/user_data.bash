@@ -2,7 +2,7 @@
 yum install -y nfs-utils amazon-efs-utils
 
 cat << EOF >> /etc/fstab
-fs-0f865ea3fe6476af2.efs.us-east-1.amazonaws.com:/ /home efs _netdev,noresvport,tls 0 0
+fs-0f865ea3fe6476af2.efs.us-east-1.amazonaws.com:/home-directories/ /home efs _netdev,noresvport,tls 0 0
 EOF
 
 mount -a
