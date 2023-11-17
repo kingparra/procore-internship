@@ -23,3 +23,5 @@ of use.  LOG OFF IMMEDIATELY if you do not agree to
 the conditions stated in this warning.
 * * * * * * * * * * * * * * * * * * * * * * * * *
 EOF
+
+amazon-linux-extras install -y lynis
