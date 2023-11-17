@@ -192,6 +192,16 @@ data "aws_ami" "amzlinux" {
   }
 }
 
+
+data "aws_iam_role" "ssm_setup" {
+  name = "AmazonSSMRoleForInstancesQuickSetup"
+}
+
+resource "aws_iam_instance_profile" "bastion_profile" {
+  name = "bastion_host_instance_profile"
+  role = data.aws_iam_role.ssm_setup.id
+}
+
 resource "aws_launch_template" "lt" {
   name          = "bastion-host-lt"
   image_id      = data.aws_ami.amzlinux.id
@@ -200,9 +210,9 @@ resource "aws_launch_template" "lt" {
   key_name      = var.key_pair_name
   # Set the version of the lt to use to latest
   update_default_version = true
-  # iam_instance_profile {
-  #   name = aws_iam_instance_profile.deploy.name
-  # }
+  iam_instance_profile {
+    name = aws_iam_instance_profile.bastion_profile.name
+  }
   monitoring {
     enabled = true
   }
