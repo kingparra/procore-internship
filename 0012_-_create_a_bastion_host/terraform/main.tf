@@ -218,6 +218,7 @@ resource "aws_launch_template" "lt" {
     resource_type = "instance"
     tags = {
       Name = "bastion-host"
+      TicketName = var.ticket_name
     }
   }
 }
