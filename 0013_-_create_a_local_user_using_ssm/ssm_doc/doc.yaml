@@ -9,15 +9,6 @@ parameters:
     allowedPattern: ^[^"'\/\\\[\]:;|=,+*?<>@\r\n]+$
     maxChars: 32
 
-  Description:
-    type: String
-    description: >
-      (Optional) The user's description.
-      Used as the full name field GECOS in /etc/passwd.
-    default: ' '
-    allowedPattern: ^[^"'\/\\\[\]:;|=,+*?<>@\r\n]+$
-    maxChars: 48
-
   PublicKey:
     type: String
     description: SSH public key to add to ~/.ssh/authorized_keys
@@ -35,12 +26,12 @@ mainSteps:
         - |
           #!/usr/bin/env bash
           set -x
-          useradd '{{UserName}}' -C '{{Description}}'
+          useradd '{{UserName}}'
           if test -n "{{PublicKey}}"; then
             echo '{{PublicKey}}' >> ~'{{UserName}}'/.ssh/authorized_keys
           fi
           if grep -q ^'{{UserName}}' /etc/passwd; then
-            echo "User {{UserName}} created"
+            echo "User {{UserName}} created" 1>&2
           else
             echo "User {{UserName}} not created"
           fi
