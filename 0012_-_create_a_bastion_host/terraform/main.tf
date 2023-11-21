@@ -24,7 +24,7 @@ data "aws_subnets" "prod_vpc_private_subnets" {
   }
 }
 
-# used for 
+# used for
 data "aws_subnets" "prod_vpc_public_subnets" {
   filter {
     name   = "vpc-id"
@@ -192,14 +192,57 @@ data "aws_ami" "amzlinux" {
   }
 }
 
+# Create a policy that allow cloudwatch log operations for ticket 15
+data "aws_iam_policy_document" "custom_metrics" {
+  statement {
+    sid = "PermsForCustomMetrics"
+    actions = [
+      "cloudwatch:PutMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:ListMetrics",
+      "ec2:DescribeTags",
+     ]
+    resources = [ "*" ]
+  }
+}
 
-data "aws_iam_role" "ssm_setup" {
-  name = "AmazonSSMRoleForInstancesQuickSetup"
+resource "aws_iam_policy" "custom_metrics" {
+  name = "custom_metrics"
+  policy = data.aws_iam_policy_document.custom_metrics.json
+}
+
+# Create a role and attach the policies
+resource "aws_iam_role" "bastion_host_role" {
+  name = "bastion_host_role"
+  assume_role_policy = <<-EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+              "Service": "ec2.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    }
+    EOF
+}
+
+resource "aws_iam_role_policy_attachment" "bastion_host_role_attachments" {
+  for_each = toset([
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/AmazonSSMPatchAssociation",
+    aws_iam_policy.custom_metrics.arn,
+    ])
+  role = aws_iam_role.bastion_host_role.name
+  policy_arn = each.value
 }
 
 resource "aws_iam_instance_profile" "bastion_profile" {
   name = "bastion_host_instance_profile"
-  role = data.aws_iam_role.ssm_setup.id
+  role = aws_iam_role.bastion_host_role.name
 }
 
 resource "aws_launch_template" "lt" {
