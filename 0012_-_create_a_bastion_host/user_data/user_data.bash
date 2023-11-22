@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-yum install -y nfs-utils amazon-efs-utils
+yum install -y nfs-utils amazon-efs-utils amazon-cloudwatch-agent
+
+amazon-linux-extras install -y lynis
+
 
 cat << EOF >> /etc/fstab
 fs-0f865ea3fe6476af2.efs.us-east-1.amazonaws.com:/home-directories/ /home efs _netdev,noresvport,tls 0 0
@@ -23,5 +26,3 @@ of use.  LOG OFF IMMEDIATELY if you do not agree to
 the conditions stated in this warning.
 * * * * * * * * * * * * * * * * * * * * * * * * *
 EOF
-
-amazon-linux-extras install -y lynis
