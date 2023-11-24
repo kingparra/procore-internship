@@ -1,0 +1,44 @@
+---
+- become: true
+  hosts: all
+  tasks:
+
+    - name: Ensure cloudwatch agent is installed
+      yum:
+        name: amazon-cloudwatch-agent
+        state: present
+
+    - name: Start cloudwatch agent
+      shell: amazon-cloudwatch-agent-ctl -a start
+
+    - name: Install deps for monitoring script
+      yum:
+        state: present
+        name: '{{ item }}'
+      loop:
+        - perl-Switch
+        - perl-DateTime
+        - perl-Sys-Syslog
+        - perl-LWP-Protocol-https
+        - perl-Digest-SHA.x86_64
+
+    - name: Install monitoring scripts to /opt/aws
+      shell: |
+        #!/usr/bin/env bash
+        curl 'https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip' -O
+        unzip CloudWatchMonitoringScripts-1.2.2.zip
+        mv aws-scripts-mon /opt/aws/
+        rm CloudWatchMonitoringScripts-1.2.2.zip
+
+    - name: Upload metrics every 5 minutes with cron
+      ansible.builtin.cron:
+        name: "upload custom metrics"
+        user: root
+        minute: */5
+        job: |
+          /opt/aws/aws-scripts-mon/mon-put-instance-data.pl \
+            --mem-used-incl-cache-buff \
+            --mem-util \
+            --disk-space-util \
+            --disk-path=/ \
+            --from-cron
