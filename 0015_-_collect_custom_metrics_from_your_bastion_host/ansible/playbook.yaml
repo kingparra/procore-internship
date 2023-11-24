@@ -14,7 +14,7 @@
     - name: Install deps for monitoring script
       yum:
         state: present
-        name: '{{ item }}'
+        name: "{{ item }}"
       loop:
         - perl-Switch
         - perl-DateTime
@@ -34,11 +34,6 @@
       ansible.builtin.cron:
         name: "upload custom metrics"
         user: root
-        minute: */5
+        minute: "*/5"
         job: |
-          /opt/aws/aws-scripts-mon/mon-put-instance-data.pl \
-            --mem-used-incl-cache-buff \
-            --mem-util \
-            --disk-space-util \
-            --disk-path=/ \
-            --from-cron
+          /opt/aws/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron
