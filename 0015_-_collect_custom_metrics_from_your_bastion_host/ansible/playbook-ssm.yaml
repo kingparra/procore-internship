@@ -1,7 +1,16 @@
 ---
-- become: true
-  hosts: all
+- hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    ansible_connection: aws_ssm
+    ansible_aws_ssm_profile: procore
+    ansible_aws_ssm_region: us-east-1
+    ansible_aws_ssm_bucket_name: ansible-ssm-bucket-65323480875
   tasks:
+
+    - name: Ping all hosts
+      ping:
 
     - name: Ensure cloudwatch agent is installed
       yum:
@@ -14,7 +23,7 @@
     - name: Install deps for monitoring script
       yum:
         state: present
-        name: "{{ item }}"
+        name: '{{ item }}'
       loop:
         - perl-Switch
         - perl-DateTime
@@ -37,3 +46,4 @@
         minute: "*/5"
         job: |
           /opt/aws/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron
+
