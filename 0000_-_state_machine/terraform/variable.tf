@@ -12,5 +12,6 @@ variable "ticket_names" {
     "0013_-_create_a_local_user_using_ssm",
     # 14 does not have any terraform code
     "0015_-_collect_custom_metrics_from_your_bastion_host",
+    "0016_-_configure_lambda_function_to_auto_start_and_stop_ec2",
  ]
 }
