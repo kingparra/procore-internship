@@ -1,7 +1,7 @@
 variable "ticket_names" {
   type = list(string)
   description = "A list of ticket number and name combinations like 0000_-_ticket_title format. Will be used to generate a bucket."
-  default = [ 
+  default = [
     "0006_-_audit_solution_for_iam_changes",
     "0007_-_create_a_vpc_for_development",
     "0008_-_create_a_vpc_for_production",
@@ -10,5 +10,7 @@ variable "ticket_names" {
     # 11 uses the same backend as 10
     "0012_-_create_a_bastion_host",
     "0013_-_create_a_local_user_using_ssm",
+    # 14 does not have any terraform code
+    "0015_-_collect_custom_metrics_from_your_bastion_host",
  ]
 }
