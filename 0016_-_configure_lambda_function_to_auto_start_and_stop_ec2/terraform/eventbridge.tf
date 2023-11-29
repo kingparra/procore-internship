@@ -3,12 +3,12 @@ locals {
     AutoOn = {
       name = "auto_on_during_weekday"
       schedule_expression = "cron(0 5 ? * Mon-Fri *)"
-      fn_arn = aws_lambda_function.auto_on.arn
+      fn_arn = module.auto_on.lambda_function_arn
     }
     AutoOff = {
       name = "auto_off_during_weekday"
       schedule_expression = "cron(0 20 ? * Mon-Fri *)"
-      fn_arn = aws_lambda_function.auto_off.arn
+      fn_arn = module.auto_off.lambda_function_arn
     }
   }
 }
@@ -21,7 +21,7 @@ resource "aws_scheduler_schedule" "auto" {
   flexible_time_window {
     mode = "OFF"
   }
-  schedule_expression = each.value["schedule_expression"]
+  schedule_expression = each.value.schedule_expression
   target {
     arn = each.value["fn_arn"]
     role_arn = aws_iam_role.eb_auto.arn
@@ -60,10 +60,10 @@ resource "aws_iam_role_policy" "eb_auto" {
               "lambda:InvokeFunction"
           ],
           "Resource": [
-              "${aws_lambda_function.auto_on.arn}:*",
-              "${aws_lambda_function.auto_on.arn}",
-              "${aws_lambda_function.auto_off.arn}:*",
-              "${aws_lambda_function.auto_off.arn}"
+              "${local.schedules.AutoOn.fn_arn}:*",
+              "${local.schedules.AutoOn.fn_arn}",
+              "${local.schedules.AutoOff.fn_arn}:*",
+              "${local.schedules.AutoOff.fn_arn}"
           ]
         }
       ]
