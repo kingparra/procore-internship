@@ -13,5 +13,6 @@ variable "ticket_names" {
     # 14 does not have any terraform code
     "0015_-_collect_custom_metrics_from_your_bastion_host",
     "0016_-_configure_lambda_function_to_auto_start_and_stop_ec2",
+    "0017_-_test_the_deployment_of_a_splunk_enterprise_server_and_universal_forwarder_agents",
  ]
 }
