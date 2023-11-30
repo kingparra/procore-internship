@@ -16,14 +16,14 @@ locals {
 ## create the schedules
 resource "aws_scheduler_schedule" "auto" {
   for_each = local.schedules
-  name = each.value["name"]
+  name = each.value.name
   group_name = "default"
   flexible_time_window {
     mode = "OFF"
   }
   schedule_expression = each.value.schedule_expression
   target {
-    arn = each.value["fn_arn"]
+    arn = each.value.fn_arn
     role_arn = aws_iam_role.eb_auto.arn
   }
 }

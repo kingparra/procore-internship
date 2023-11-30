@@ -1,21 +1,11 @@
-resource "aws_iam_role_policy" "lambda_start_stop_ec2" {
+resource "aws_iam_policy" "lambda_start_stop_ec2" {
   name   = "lambda_start_stop_ec2"
-  role = aws_iam_role.lambda_start_stop_ec2.id
+  path = "/"
   policy = file("${path.module}/../lambda/policy.json")
 }
 
-resource "aws_iam_role" "lambda_start_stop_ec2" {
-  name = "lambda_start_stop_ec2"
-  assume_role_policy = jsonencode({
-    Version = "2008-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+resource "aws_iam_role_policy_attachment" "att" {
+  for_each = toset([module.auto_on.lambda_role_name, module.auto_off.lambda_role_name])
+  role = each.value
+  policy_arn = aws_iam_policy.lambda_start_stop_ec2.arn
 }
