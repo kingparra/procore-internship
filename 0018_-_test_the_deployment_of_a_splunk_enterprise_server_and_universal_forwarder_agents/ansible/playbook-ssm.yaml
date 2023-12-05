@@ -1,0 +1,88 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    splunk_user: "{{lookup('amazon.aws.aws_secret', 'splunk_creds.username', nested=true)}}"
+    splunk_password: "{{lookup('amazon.aws.aws_secret', 'splunk_creds.password', nested=true)}}"
+    server: "{{lookup('amazon.aws.aws_secret', 'splunk_creds.hostname', nested=true)}}"
+    ansible_connection: aws_ssm
+    ansible_aws_ssm_profile: procore
+    ansible_aws_ssm_region: us-east-1
+    ansible_aws_ssm_bucket_name: ansible-ssm-bucket-65323480875
+  tasks:
+
+    - name: Install splunk forwarder
+      ansible.builtin.yum:
+        name: "https://download.splunk.com/products/universalforwarder/releases/9.1.2/linux/splunkforwarder-9.1.2-b6b9c8185839.x86_64.rpm"
+        state: present
+
+    - name: Create forwarder service file
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk enable boot-start --accept-license --no-prompt
+
+    - name: Configure the forwarder to connect to a receiving indexer
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk add forward-server {{server}}:9997 \
+          --accept-license \
+          --answer-yes \
+          --auto-ports \
+          --no-prompt \
+          -auth '{{splunk_user}}:{{splunk_password}}'
+
+
+    - name: Create a user for splunk
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk add user {{splunk_user}} -password '{{splunk_password}}' \
+          -role admin -auth '{{splunk_user}}:{{splunk_password}}'
+
+    - name: Configure the forwarder to talk to the servers api
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk set deploy-poll \
+          {{server}}:8089 \
+          --accept-license \
+          --answer-yes \
+          --auto-ports \
+          --no-prompt \
+          -auth '{{splunk_user}}:{{splunk_password}}'
+
+    - name: Start splunk
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk start \
+          --accept-license \
+          --answer-yes \
+          --auto-ports \
+          --no-prompt \
+          -auth '{{splunk_user}}:{{splunk_password}}'
+
+    - name: Monitor /var/log/secure
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk add monitor /var/log/secure \
+          --accept-license \
+          --answer-yes \
+          --auto-ports \
+          --no-prompt \
+          -auth '{{splunk_user}}:{{splunk_password}}'
+
+    - name: Restart splunk forwarder service
+      ansible.builtin.shell: |
+        PATH="/opt/splunkforwarder/bin/:$PATH"
+        splunk restart
+
+    # - name: Uninstall splunk forwarder
+    #   yum:
+    #     name: splunkforwarder
+    #     state: absent
+
+    # - name: Clean up splunk files and users
+    #   shell: |
+    #     systemctl kill SplunkForwarder
+    #     rm -rf /opt/splunkforwarder/
+    #     rm /etc/systemd/system/SplunkForwarder.service
+    #     userdel splunkfwd
