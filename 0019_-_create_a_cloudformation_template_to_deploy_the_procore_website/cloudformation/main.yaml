@@ -1,0 +1,228 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: A template to deploy the Pro-Core Plus website to any VPC.
+Parameters:
+
+  vpcId:
+    Description: The ID of the VPC to deploy the website to.
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-0e4a56a91043ebdeb
+
+  publicSubnet1:
+    Description: The ID of a public subnet in your VPC.
+    Type: String
+    Default: subnet-0dd9f32eed2a48635
+
+  publicSubnet2:
+    Description: The ID of a public subnet in your VPC.
+    Type: String
+    Default: subnet-08f1fc713eb84c00c
+
+  keyPairName:
+    Description: Name of an SSH key-pair to use for the sites server.
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: precision-procore
+
+  imageId:
+    Description: The ID of a Splunk Enterprise EC2 AMI to use in the launch template.
+    Type: AWS::EC2::Image::Id
+    Default: ami-0e40787bcd2f11bbb
+    # aws ec2 describe-images --filters \
+    #    "Name=owner-id,Values=679593333241" \
+    #    "Name=description,Values='Splunk Enterprise 9.1.1 AMI'" \
+    #   --query "Images[].ImageId" \
+    #   --output text
+
+Resources:
+
+  ## launch template and deps
+  webSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      Tags: [{Key: Name, Value: procore-website-sg-cf}]
+      GroupName: procore-website-sg-cf
+      GroupDescription: Allow HTTP(S) and SSH ingress from anywhere.
+      VpcId: !Ref vpcId
+      SecurityGroupIngress:
+        - Description: TLS from anywhere
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - Description: HTTP from anywhere
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - Description: SSH from anywhere
+          IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  webRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "deploy-procore-website-cf"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AWSCodeCommitPowerUser"
+      AssumeRolePolicyDocument: |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                  "Service": "ec2.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        }
+
+  webInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: "deploy-procore-website-cf"
+      Roles:
+        - !Ref webRole
+
+  webLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: "procore-website-lt-cf"
+      LaunchTemplateData:
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-launchtemplatedata.html
+        InstanceType: t2.micro
+        IamInstanceProfile:
+          Arn:
+            !GetAtt webInstanceProfile.Arn
+        ImageId: !Ref imageId
+        KeyName: !Ref keyPairName
+        UserData: !Base64 |
+          #!/usr/bin/env bash
+          # You need the AWSCodeCommitPowerUser policy to clone with git-remote-codecommit.
+          yum install -y python3-pip git httpd
+          python3 -m venv .venv-procore-website
+          source .venv-procore-website/bin/activate
+          pip install git-remote-codecommit
+          git clone codecommit::us-east-1://procore-website /var/www/html/
+          systemctl enable --now httpd
+        Monitoring:
+          Enabled: true
+        NetworkInterfaces:
+          # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-launchtemplatedata.html#cfn-ec2-launchtemplate-launchtemplatedata-networkinterfaces
+          - DeviceIndex: 0
+            AssociatePublicIpAddress: true
+            Groups:
+              - !Ref webSecurityGroup
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Name
+                Value: procore-website-cf
+
+  ## load balancer and deps
+
+  # target group
+  lbTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: procore-website-alb-tg-cf
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref vpcId
+
+  # security group
+  lbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      Tags: [{Key: Name, Value: procore-website-alb-sg-cf}]
+      GroupName: procore-website-alb-sg-cf
+      GroupDescription: Allow HTTP(S) ingress to the ALB from anywhere.
+      VpcId: !Ref vpcId
+      SecurityGroupIngress:
+        - Description: HTTP from anywhere
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - Description: HTTPS from anywhere
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  # alb and listeners
+  lbHTTPListener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        LoadBalancerArn: !Ref lbAlg
+        Port: 80
+        Protocol: "HTTP"
+        DefaultActions:
+          - Order: 1
+            TargetGroupArn: !Ref lbTargetGroup
+            Type: "forward"
+
+  lbAlg:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: procore-website-alb-cf
+      SecurityGroups:
+           - !Ref lbSecurityGroup
+      Subnets:
+        - !Ref publicSubnet1
+        - !Ref publicSubnet2
+
+  ## autoscaling group and deps
+  asgTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref vpcId
+      Protocol: HTTP
+      Port: 80
+
+  asgAsg:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: procore-website-asg-cf
+      MinSize: '2'
+      MaxSize: '5'
+      DesiredCapacity: '3'
+      LaunchTemplate:
+        LaunchTemplateId: !Ref webLaunchTemplate
+        Version: !GetAtt webLaunchTemplate.LatestVersionNumber
+      VPCZoneIdentifier:
+        - !Ref publicSubnet1
+        - !Ref publicSubnet2
+      MetricsCollection:
+        - Granularity: 1Minute
+          Metrics:
+            - "GroupPendingInstances"
+            - "GroupDesiredCapacity"
+            - "GroupInServiceCapacity"
+            - "GroupInServiceInstances"
+            - "GroupMaxSize"
+            - "WarmPoolPendingCapacity"
+            - "WarmPoolTerminatingCapacity"
+            - "GroupTerminatingCapacity"
+            - "WarmPoolTotalCapacity"
+            - "GroupPendingCapacity"
+            - "GroupTerminatingInstances"
+            - "WarmPoolMinSize"
+            - "GroupAndWarmPoolDesiredCapacity"
+            - "GroupTotalInstances"
+            - "WarmPoolDesiredCapacity"
+            - "WarmPoolWarmedCapacity"
+            - "GroupAndWarmPoolTotalCapacity"
+            - "GroupStandbyCapacity"
+            - "GroupTotalCapacity"
+            - "GroupMinSize"
+            - "GroupStandbyInstances"
+
+Outputs:
+     lbEndpoint:
+       Description: Endpoint DNS name of the application load balancer used to access the site.
+       Value: !GetAtt lbAlg.DNSName
