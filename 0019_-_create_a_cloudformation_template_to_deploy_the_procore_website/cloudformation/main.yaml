@@ -226,3 +226,5 @@ Outputs:
      lbEndpoint:
        Description: Endpoint DNS name of the application load balancer used to access the site.
        Value: !GetAtt lbAlg.DNSName
+       Export:
+        Name: !Sub "${AWS::StackName}-AlbEndpoint"
