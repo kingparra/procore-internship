@@ -246,23 +246,36 @@ Resources:
     Properties:
       Bucket: procore-website-alb-alb-access-logs-cf
       PolicyDocument:
-        Id: AcceptAccessLogs
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
-          - Sid: DeliverLogs
-            Effect: Allow
+          - Sid: 'ForceSSLOnlyAccess'
+            Effect: 'Deny'
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - 'arn:aws:s3:::procore-website-alb-alb-access-logs-cf/*'
+              - 'arn:aws:s3:::procore-website-alb-alb-access-logs-cf'
+            Condition:
+              Bool:
+                'aws:SecureTransport': 'false'
+          - Effect: 'Allow'
             Principal:
-              Service: "delivery.logs.amazonaws.com"
-            Action:
-              - "s3:PutObject"
-            Resource: "arn:aws:s3:::procore-website-alb-alb-access-logs-cf/*"
-          - Sid: GetBucketAcl
-            Effect: Allow
+              AWS: 'arn:aws:iam::127311923021:root'
+            Action: 's3:PutObject'
+            Resource: 'arn:aws:s3:::procore-website-alb-alb-access-logs-cf/*'
+          - Effect: 'Allow'
             Principal:
-              Service: "delivery.logs.amazonaws.com"
-            Action:
-              - "s3:GetBucketAcl"
-            Resource: "arn:aws:s3:::procore-website-alb-alb-access-logs-cf"
+              Service: 'delivery.logs.amazonaws.com'
+            Action: 's3:PutObject'
+            Resource: 'arn:aws:s3:::procore-website-alb-alb-access-logs-cf/*'
+            Condition:
+              StringEquals:
+                's3:x-amz-acl': 'bucket-owner-full-control'
+          - Effect: 'Allow'
+            Principal:
+              Service: 'delivery.logs.amazonaws.com'
+            Action: 's3:GetBucketAcl'
+            Resource: 'arn:aws:s3:::procore-website-alb-alb-access-logs-cf'
 
 Outputs:
      lbEndpoint:
