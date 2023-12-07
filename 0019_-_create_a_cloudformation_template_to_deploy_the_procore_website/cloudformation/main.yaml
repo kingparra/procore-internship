@@ -177,7 +177,7 @@ Resources:
         - !Ref publicSubnet2
       LoadBalancerAttributes:
         - Key: "access_logs.s3.enabled"
-          Value: "false"
+          Value: "true"
         - Key: "access_logs.s3.bucket"
           Value: !Ref ReportBucket
 
@@ -196,6 +196,8 @@ Resources:
       MinSize: '2'
       MaxSize: '5'
       DesiredCapacity: '3'
+      TargetGroupARNs:
+           - !Ref lbTargetGroup
       LaunchTemplate:
         LaunchTemplateId: !Ref webLaunchTemplate
         Version: !GetAtt webLaunchTemplate.LatestVersionNumber
