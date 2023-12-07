@@ -175,6 +175,11 @@ Resources:
       Subnets:
         - !Ref publicSubnet1
         - !Ref publicSubnet2
+      LoadBalancerAttributes:
+        - Key: "access_logs.s3.enabled"
+          Value: "false"
+        - Key: "access_logs.s3.bucket"
+          Value: !Ref ReportBucket
 
   ## autoscaling group and deps
   asgTargetGroup:
@@ -221,6 +226,43 @@ Resources:
             - "GroupTotalCapacity"
             - "GroupMinSize"
             - "GroupStandbyInstances"
+
+  ReportBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: procore-website-alb-alb-access-logs-cf
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'AES256'
+
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: procore-website-alb-alb-access-logs-cf
+      PolicyDocument:
+        Id: AcceptAccessLogs
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DeliverLogs
+            Effect: Allow
+            Principal:
+              Service: "delivery.logs.amazonaws.com"
+            Action:
+              - "s3:PutObject"
+            Resource: "arn:aws:s3:::procore-website-alb-alb-access-logs-cf/*"
+          - Sid: GetBucketAcl
+            Effect: Allow
+            Principal:
+              Service: "delivery.logs.amazonaws.com"
+            Action:
+              - "s3:GetBucketAcl"
+            Resource: "arn:aws:s3:::procore-website-alb-alb-access-logs-cf"
 
 Outputs:
      lbEndpoint:
