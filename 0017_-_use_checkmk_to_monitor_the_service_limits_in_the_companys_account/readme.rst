@@ -41,4 +41,4 @@ Provide screenshot of the tool monitoring your account.
 
 Implementation
 --------------
-..image:: ./images/checkmk_service_health.png
+.. image:: ./images/checkmk_service_health.png
