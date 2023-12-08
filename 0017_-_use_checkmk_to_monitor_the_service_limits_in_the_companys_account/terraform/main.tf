@@ -1,6 +1,6 @@
 # https://docs.checkmk.com/latest/en/monitoring_aws.html
 
-resource "aws_iam_access_key" "name" {
+resource "aws_iam_access_key" "key" {
   user = aws_iam_user.check_mk.name
 }
 
