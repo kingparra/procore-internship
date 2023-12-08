@@ -1,6 +1,10 @@
 ********************************************************************************************
  Ticket 17. ( Project ) Use Check_Mk to monitor the service limits in the company's account
 ********************************************************************************************
+
+
+Requirements
+------------
 ProCore Plus has a Check_MK server on prem and we need to expand it’s capabilities to run checks on AWS Accounts. Configure Check_MK so it can monitor the service limits and other basic information in your company account.
 Checkmk is software developed in Python and C++ for IT Infrastructure monitoring. It is used for the monitoring of servers, applications, networks, cloud infrastructures (public, private, hybrid), containers, storage, databases and environment sensors.
 
@@ -33,3 +37,8 @@ Use the following instructions from the official Check_MK site to configure it t
 Monitoring Amazon Web Services (AWS)
 
 Provide screenshot of the tool monitoring your account.
+
+
+Implementation
+--------------
+..image:: ./images/checkmk_service_health.png
