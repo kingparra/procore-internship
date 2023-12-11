@@ -21,13 +21,13 @@ variable "private_subnet_2" {
 variable "db_name" {
   description = "The name of the database to create"
   type        = string
-  default = "wordpress"
+  default     = "wordpress"
 }
 
 variable "db_username" {
   description = "The administrative MySQL DB user name."
   type        = string
-  default = "admin"
+  default     = "admin"
 }
 
 variable "db_user_password" {

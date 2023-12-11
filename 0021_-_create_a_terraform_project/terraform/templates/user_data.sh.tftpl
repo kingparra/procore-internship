@@ -1,50 +1,48 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -x
 
-# variables will be populated by terraform template
-db_username="${db_username}"
-db_user_password="${db_user_password}"
-db_name="${db_name}"
-db_RDS="${db_RDS}" # hostname of RDS instance
+# variable will be populated by terraform template
+db_username=${db_username}
+db_user_password=${db_user_password}
+db_name=${db_name}
+db_RDS=${db_RDS}
 
-# install LAMP Server
-yum update -y
-
-# install apache server and mysql client
-yum install -y httpd mysql
-
-# first enable php7.xx from amazon-linux-extra and install it
 amazon-linux-extras enable php7.4
 yum clean metadata
 yum install -y \
-  php          \
-  php-bcmath   \
-  php-cgi      \
-  php-common   \
-  php-curl     \
-  php-devel    \
-  php-fpm      \
-  php-gd       \
-  php-gettext  \
-  php-imap     \
-  php-intl     \
-  php-json     \
+  polkit \
+  httpd \
+  mysql \
+  mariadb-server \
+  php \
+  php-pear \
+  php-cgi \
+  php-common \
+  php-curl \
   php-mbstring \
-  php-mysqlnd  \
-  php-pear     \
-  php-xml      \
-  php-zip
-
-#install imagick extension
-yum install -y \
+  php-gd \
+  php-mysqlnd \
+  php-gettext \
+  php-bcmath \
+  php-json \
+  php-xml \
+  php-fpm \
+  php-intl \
+  php-zip \
+  php-imap \
+  php-devel \
   gcc \
   ImageMagick \
   ImageMagick-devel \
   ImageMagick-perl
+
 pecl install imagick
 chmod 755 /usr/lib64/php/modules/imagick.so
-printf -- '\n%s\n\n' 'extension=imagick' >> /etc/php.d/20-imagick.ini
-systemctl restart php-fpm.service
-systemctl start httpd
+cat <<EOF >>/etc/php.d/20-imagick.ini
+
+extension=imagick
+
+EOF
 
 # Change OWNER and permission of directory /var/www
 usermod -a -G apache ec2-user
@@ -52,23 +50,15 @@ chown -R ec2-user:apache /var/www
 find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod 0664 {} \;
 
-sudo yum -y install mariadb-server
-sudo service mariadb start
+#Installing Wordpress using WP CLI
+# named wp-cli.phar to work around bug: https://github.com/wp-cli/config-command/issues/141
+curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/local/bin/wp-cli.phar && chmod +x /usr/local/bin/wp-cli.phar
 
-# Install Wordpress using WP CLI
-curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar
-mv wp-cli.phar /usr/local/bin/wp
-wp core download --path=/var/www/html --allow-root
-wp config create \
-  --dbname="$db_name" \
-  --dbuser="$db_username" \
-  --dbpass="$db_user_password" \
-  --dbhost="$db_RDS" \
-  --path=/var/www/html \
-  --allow-root \
-  --extra-php <<PHP
-define( 'FS_METHOD', 'direct' );
+PATH=/usr/local/bin:$PATH
+
+wp-cli.phar core download --path=/var/www/html --allow-root
+wp-cli.phar config create --dbname=$db_name --dbuser=$db_username --dbpass=$db_user_password --dbhost=$db_RDS --path=/var/www/html --allow-root --extra-php <<PHP
+define('FS_METHOD', 'direct');
 define('WP_MEMORY_LIMIT', '128M');
 PHP
 
@@ -80,6 +70,7 @@ chmod -R 774 /var/www/html
 sed -i '/<Directory "\/var\/www\/html">/,/<\/Directory>/ s/AllowOverride None/AllowOverride all/' /etc/httpd/conf/httpd.conf
 
 #Make apache  autostart and restart apache
-systemctl enable httpd.service
-systemctl restart httpd.service
+systemctl enable --now mariadb php-fpm httpd
+systemctl restart mariadb php-fpm httpd
+
 echo WordPress Installed
